@@ -1,0 +1,16 @@
+- name: Workday, worktime
+  prefer: Monday to Friday, 9 - 18 o'clock
+      
+- name: Weekend, worktime
+  prefer: Saturday and Sunday, 9 - 18 o'clock
+
+- name: Worktime
+  prefer:
+    - Monday - Friday, 09:00 - 18:00
+    - Saturday, Sunday; 09:00 - 18:00
+
+- name: Spare time
+  prefer:
+    - Monday - Friday, 00:00 - 08:59
+    - Saturday, Sunday; 00:00 - 08:59
+    - 18:00 - 23:59

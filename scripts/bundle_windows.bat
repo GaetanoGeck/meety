@@ -1,0 +1,1 @@
+pyinstaller meety-windows.spec

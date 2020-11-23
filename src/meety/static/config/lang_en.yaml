@@ -1,0 +1,50 @@
+meetings:
+  preferences:
+    skip words: [from]
+    range words: [to, till]
+    list words: [and]
+    time:
+      format:
+        - "%H o'clock"
+    weekday:
+      names:
+        1: [Monday, Mon]
+        2: [Tuesday, Tue]
+        3: [Wednesday, Wed]
+        4: [Thursday, Thu, Thur, Thurs]
+        5: [Friday, Fri]
+        6: [Saturday, Sat]
+        7: [Sunday, Sun]
+
+  attributes:
+    - action: synonym
+      output: name
+      inputs:
+        - title
+        - meeting
+
+    - action: synonym
+      output: password
+      inputs:
+        - pwd
+        - "*passcode*"
+
+    - action: synonym
+      output: zoom-id
+      inputs:
+        - meeting id
+
+    - action: synonym
+      output: prefer
+      level: 1
+      inputs:
+        - time
+        - times
+        - timing
+        - when
+
+    - action: synonym
+      output: weekday
+      inputs:
+        - day
+        - days

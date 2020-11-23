@@ -1,0 +1,6 @@
+appdirs
+pyyaml
+pyperclip
+termcolor
+colorama
+pyqt5

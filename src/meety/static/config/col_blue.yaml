@@ -1,0 +1,33 @@
+# Meety: colour scheme "blue"
+cli:
+  styles:
+    matching_query:
+      color: white
+      background: on_blue
+      attrs: ["bold"]
+    matching_preference:
+      #color: white
+      #background: on_blue
+      attrs: ["bold"]
+    #others:
+      #color: white            # default: None
+      #background: on_blue     # default: None
+      #attrs: ["bold"]         # default: []
+
+gui:
+  styles:
+    matching_query:
+      color: "#236BE8"
+      background: "#eee"
+      attrs: ["bold"]
+      selected: "#ddd"
+    matching_preference:
+      color: "#444"
+      background: "#eee"
+      attrs: ["bold"]
+      selected: "#ddd"
+    others:
+      color: "#888"
+      background: "#eee"
+      attrs: ["bold"]
+      selected: "#ddd"

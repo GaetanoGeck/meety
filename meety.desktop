@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Meety
+Comment=Quickly start online meetings from YAML
+Exec=meety
+Icon=meety.png
+Type=Application
+Terminal=false
+Categories=Utility;

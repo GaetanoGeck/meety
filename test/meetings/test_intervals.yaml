@@ -1,0 +1,88 @@
+date_interval_parse:
+  - text: "2020-11-29"
+    tests:
+    - date: "2020-11-29"
+      expected: True
+    - date: "2020-11-28"
+      expected: False
+
+  - text: "2020-11-29 - 2020-11-30"
+    tests:
+    - date: "2020-11-29"
+      expected: True
+    - date: "2020-11-30"
+      expected: True
+    - date: "2020-12-28"
+      expected: False
+    - date: "2020-12-01"
+      expected: False
+
+  - text: "2020-11-29, 2020-12-01"
+    tests:
+    - date: "2020-11-29"
+      expected: True
+    - date: "2020-11-30"
+      expected: False
+    - date: "2020-12-01"
+      expected: True
+
+
+time_interval_parse:
+  - text: "12"
+    tests:
+    - datetime: "2020-11-29 12:00"
+      expected: True
+    - datetime: "2020-11-29 11:59"
+      expected: False
+    - datetime: "2020-11-29 12:01"
+      expected: False
+
+  - text: "12 - 14"
+    tests:
+    - datetime: "2020-11-29 12:00"
+      expected: True
+    - datetime: "2020-11-29 13:00"
+      expected: True
+    - datetime: "2020-11-29 14:00"
+      expected: True
+    - datetime: "2020-11-29 11:59"
+      expected: False
+    - datetime: "2020-11-29 14:01"
+      expected: False
+
+  - text: "12:00, 14:00"
+    tests:
+    - datetime: "2020-11-29 12:00"
+      expected: True
+    - datetime: "2020-11-29 13:00"
+      expected: False
+    - datetime: "2020-11-29 14:00"
+      expected: True
+
+
+weekday_interval_parse:
+  - text: Friday - Sunday
+    tests:
+    - date: "2020-11-26"
+      expected: False
+    - date: "2020-11-27"
+      expected: True
+    - date: "2020-11-28"
+      expected: True
+    - date: "2020-11-29"
+      expected: True
+    - date: "2020-11-30"
+      expected: False
+
+  - text: Friday, Sunday
+    tests:
+    - date: "2020-11-26"
+      expected: False
+    - date: "2020-11-27"
+      expected: True
+    - date: "2020-11-28"
+      expected: False
+    - date: "2020-11-29"
+      expected: True
+    - date: "2020-11-30"
+      expected: False

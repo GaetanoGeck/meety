@@ -1,0 +1,49 @@
+# no key
+- key: baz
+  expression: '(\w+)'
+  substitute: '{foo}-{bar}'
+  input:
+    foo: alpha
+    bar: beta
+  expected:
+    foo: alpha
+    bar: beta
+
+# key and non-matching pattern
+- key: baz
+  expression: '(\w+)'
+  substitute: '{foo}-{bar}'
+  input:
+    foo: alpha
+    bar: beta
+    baz: ''
+  expected:
+    foo: alpha
+    bar: beta
+    baz: ''
+
+# key and matching pattern, simple substitute
+- key: baz
+  expression: '(\w+)'
+  substitute: '{foo}-{bar}'
+  input:
+    foo: alpha
+    bar: beta
+    baz: gamma
+  expected:
+    foo: alpha
+    bar: beta
+    baz: alpha-beta
+
+# key and matching pattern, groupin substitute
+- key: baz
+  expression: '(\w+)'
+  substitute: '\1-\1'
+  input:
+    foo: alpha
+    bar: beta
+    baz: gamma
+  expected:
+    foo: alpha
+    bar: beta
+    baz: gamma-gamma

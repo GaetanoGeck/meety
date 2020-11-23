@@ -1,0 +1,202 @@
+######################################################################
+# Meety - user configuration
+# 
+# This is the standard template. Adapt it to your preferences by
+# uncommenting the respective parts or setting the respective values.
+######################################################################
+
+additional_config:
+  # languages --------------------------
+  lang_de: no # German
+  lang_en: yes # English
+  lang_es: no # Spanish
+  lang_fr: no # French
+  lang_it: no # Italian
+  # time formats -----------------------
+  #time_dmy: no # DD/MM/YYYY
+  #time_mdy: no # MM/DD/YYYY
+  # colour schemes ---------------------
+  #col_blue: yes
+  #col_green: yes
+  #col_magenta: yes
+
+# Configuration for command line interface `cmeety`
+cli:
+  # Default arguments
+  args:
+    # data -------------------------------------------------
+    #- "--only-explicit" # only include meeting files in the arguments
+    #- "-file PATH" # include meeting file on path PATH
+    #- "-directory PATH" # include YAML files in directory PATH
+    #
+    # query ------------------------------------------------
+    #- "--first" # choose first, if there are multiple matches 
+    #- "--best" # consider only the best matching meetings
+    #
+    # connection -------------------------------------------
+    #- "--yes" # assume yes, don't ask to connect
+    #- "--copy-password" # copy password to clipboard on connection
+    #- "--choose-connection" # ask for connection handler, if multiple
+    #- "--test-run" # print connect command, don't connect
+    #
+    # debugging --------------------------------------------
+    #- "--verbose" # show more detailed log
+    #- "--debug" # show very detailed log
+
+  # Styling of meeting list entries
+  # 
+  # The arguments are passed to `termcolor.colored`. Support for
+  # attributes varies across terminals, see the documentation of
+  # `termcolor` for details on that and possible values:
+  # 
+  # https://pypi.org/project/termcolor/
+  styles:
+    #matching_query:
+      #color: white
+      #background: on_magenta
+      #attrs: ["bold"]
+    #matching_preference:
+      #color: white
+      #background: on_magenta
+      #attrs: ["bold"]
+    #others:
+      #color: white            # default: None
+      #background: on_magenta  # default: None
+      #attrs: ["bold"]         # default: []
+
+
+gui:
+  # Default arguments
+  args:
+    # most like for cli.args, as above
+    # gui-specific -----------------------------------------
+    #- "-window-width WIDTH" # set window width to WIDTH
+    #- "-window-height HEIGHT" # set window height to HEIGHT
+
+  # Styling of meeting list entries
+  # 
+  # Properties `color`, `background` and `selected` should be
+  # valid color specifications for Qt. Some color names like
+  # "white", "black" and "yellow" are supported as well as
+  # hexadecimal RGB specifications of the from #rgb or #rrggbb.
+  # 
+  # The only supported attribute so far is "bold".
+  styles:
+    #matching_query:
+      #color: "#ea195d"
+      #background: "#eee"
+      #attrs: ["bold"]
+      #selected: "#ddd"
+    #matching_preference:
+      #color: "#444"
+      #background: "#eee"
+      #attrs: ["bold"]
+      #selected: "#ddd"
+    #others:
+      #color: "#888"
+      #background: "#eee"
+      #attrs: ["bold"]
+      #selected: "#ddd"
+
+
+# Meeting specifications
+meetings:
+  # You can extend (or shorten) date and time spans for
+  # all time preferences specifications in all meetings
+  preferences:
+    date: 
+      start_delta:
+        # A meeting on 2020-11-16 matches also
+        # on 2020-11-15, after 23:00
+        hours: -1
+      end_delta:
+        # A meeting on 2020-11-16 matches also
+        # on 2020-11-17, before 01:00
+        hours: +1
+    time: 
+      start_delta:
+        # A meeting that starts at 14:15
+        # matches already from 14:10 on
+        minutes: -5
+      end_delta:
+        # A meeting that ends at 15:45
+        # matches until 15:50
+        minutes: +5
+
+  # Automatically clean existing attributes or derive new
+  # attributes from those provided
+  attributes:
+    # The following action is applied by default.
+    # Example ----------------------------------------------
+    #   It turns the following attributes
+    #     zoom-id: 123-456-789
+    #     zoom-id: 123 456 789
+    #     zoom-id: 123-456 789
+    #   into attribute
+    #     zoom-id: 123456789
+    #   which can be used in an URL and so on.
+    # End of example ---------------------------------------
+    #- action: strip
+      #texts: ["-", " "]
+      #input: zoom-id
+
+    # The following action is applied by default.
+    # Example ----------------------------------------------
+    #   If a meeting entry has an attribute with
+    #   key 'zoom-url', nothing happens.
+    #   If it has no such attribute but has an attribute
+    #     'zoom-id: 123456789',
+    #   then the attribute
+    #     'zoom-url: https://zoom.us/j/{zoom-id}'
+    #   is added.
+    # End of example ---------------------------------------
+    #- action: infer
+      #name: zoom-url
+      #value: https://zoom.us/j/{zoom-id}
+
+    # A simplified version of the 'infer' action is
+    # the 'synonym' action, where you don't have to provide
+    # a value (which is simply copied).
+    # Example ----------------------------------------------
+    #   If a meeting entry has an attribute with
+    #   key 'omega', nothing happens.
+    #   If it has no such attribute but has an attribute
+    #     'alpha: <VALUE>'
+    #   or an attribute
+    #     'beta: <VALUE>',
+    #   then the attribute
+    #     'omega: <VALUE>'
+    #   is added. If attributes for multiple input keys
+    #   exist, the value of one of these attributes will be
+    #   used.
+    # End of example ---------------------------------------
+    #- action: synonym
+      #output: omega
+      #inputs:
+        #- alpha
+        #- beta
+
+connect:
+  handlers:
+    # You can register your own connection handlers.
+    #- action: register
+      #name: Firefox
+      #command: firefox --url={url}
+      #system: Linux # optional, only use on Linux
+      #installed: firefox # optional, only use when program found
+
+    # Note that newly registered handlers are appended to
+    # the list of connection handlers and thus are tried
+    # last. If you want to apply it early, prepend it
+    # explicitly:
+    #- action: prepend
+      #name: Firefox
+
+    # You can disable already registered handlers,
+    # in particular those provided by the default
+    # configuration.
+    # The following action, for instance, removes
+    # all handlers for that match pattern 'zoom*',
+    # e.g., handlers 'Zoom (app)' and 'Zoom (browser)'.
+    #- action: remove
+      #name: zoom*

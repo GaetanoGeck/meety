@@ -1,0 +1,57 @@
+meetings:
+  preferences:
+    skip words: [de]
+    range words: [à]
+    list words: [et]
+    time:
+      format:
+        - "%H.%M h"
+        - "%H.%M heures"
+        - "%H:%M h"
+        - "%H:%M heures"
+        - "%H h"
+        - "%H h %M"
+        - "%H heures"
+        - "%H heures %M"
+    weekday:
+      names:
+        1: [lundi, Lu]
+        2: [mardi, Ma]
+        3: [mercredi, Me]
+        4: [jeudi, Je]
+        5: [vendredi, Ve]
+        6: [samedi, Sa]
+        7: [dimanche, Di]
+
+  attributes:
+    - action: synonym
+      output: name
+      inputs:
+        - nom
+        - titre
+
+    - action: synonym
+      output: password
+      inputs:
+        - mot de passe
+        - mdp
+        - code d'accès
+
+    - action: synonym
+      output: prefer
+      level: 1
+      inputs:
+        - temps
+        - quand
+
+    - action: synonym
+      output: weekday
+      inputs:
+        - jour
+        - jours
+
+    - action: synonym
+      output: time
+      inputs:
+        - temps
+      level: 2

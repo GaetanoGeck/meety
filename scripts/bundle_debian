@@ -1,0 +1,33 @@
+#! /bin/bash
+################################################################################
+# bundle_debian
+################################################################################
+
+bundle() {
+    echo "Bundle package"
+    python3 setup.py \
+        --command-packages=stdeb.command \
+        sdist_dsc \
+        --with-python2=False \
+        --with-python3=True \
+        --no-python2-scripts=True \
+        --copyright-file LICENSE \
+        bdist_deb
+}
+
+
+install_requirements() {
+    echo "Install requirements"
+    sudo apt install \
+        python3-all \
+        python-setuptools \
+        dh-python \
+        debhelper
+}
+
+
+if [[ "$1" = "install_dependencies" ]]; then
+    install_requirements
+else
+    bundle
+fi

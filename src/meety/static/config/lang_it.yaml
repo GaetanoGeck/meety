@@ -1,0 +1,49 @@
+meetings:
+  preferences:
+    skip words: [dalle]
+    range words: [e le ore, alle]
+    list words: [e]
+    time:
+      format:
+        - "le ore %H:%M"
+        - "le ore %H.%M"
+    weekday:
+      names:
+        1: [lunedì, lun]
+        2: [martedì, mar]
+        3: [mercoledì, mer]
+        4: [giovedì, gio]
+        5: [venerdì, ven]
+        6: [sabato, sab]
+        7: [domenica, dom]
+
+  attributes:
+    - action: synonym
+      output: name
+      inputs:
+        - nome
+        - titolo
+
+    - action: synonym
+      output: prefer
+      level: 1
+      inputs:
+        - tempo
+        - quando
+
+    - action: synonym
+      output: weekday
+      inputs:
+        - giorno
+        - giornos
+
+    - action: synonym
+      output: date
+      inputs:
+        - data
+
+    - action: synonym
+      output: time
+      inputs:
+        - tempo
+      level: 2

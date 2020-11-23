@@ -1,0 +1,15 @@
+- input:
+    Titel: Ein Meeting
+    Passwort: 1234PASS
+    Zeiten:
+      Wochentag: Montag
+      Datum: 2020-11-21
+      Zeit: 11:00 - 12:00
+
+  expected:
+    name: Ein Meeting
+    password: 1234PASS
+    prefer:
+      weekday: Montag
+      date: 2020-11-21
+      time: 11:00 - 12:00

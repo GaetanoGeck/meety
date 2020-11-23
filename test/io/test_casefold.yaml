@@ -1,0 +1,47 @@
+# only level 1
+- input:
+    foo: 1
+    bar: 2
+  expected:
+    foo: 1
+    bar: 2
+
+# only level 1
+- input:
+    FOO: 1
+    Bar: 2
+  expected:
+    foo: 1
+    bar: 2
+    
+# dict, also level 2
+- input:
+    FOO: 1
+    Bar:
+      ALPHA: 21
+      BETA: 22
+  expected:
+    foo: 1
+    bar:
+      alpha: 21
+      beta: 22
+
+# list, only level 1
+- input:
+  - FOO: 1
+  - BAR: 2
+  expected:
+  - foo: 1
+  - bar: 2
+
+# list, also level 2
+- input:
+  - FOO: 1
+  - BAR:
+    - ALPHA: 10
+    - BETA: 11
+  expected:
+  - foo: 1
+  - bar:
+    - alpha: 10
+    - beta: 11

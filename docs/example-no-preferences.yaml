@@ -1,0 +1,6 @@
+- name: Algorithms
+  url: http://my-university.edu/algorithms
+
+- name: Coffee
+  zoom-id: 123456789
+  password: 1234

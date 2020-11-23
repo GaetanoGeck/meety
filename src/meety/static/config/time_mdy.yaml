@@ -1,0 +1,6 @@
+meetings:
+  preferences:
+    date:
+      format:
+        - "%m/%d/%Y"
+        - "%m/%d/%y"

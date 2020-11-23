@@ -1,0 +1,117 @@
+# Empty:
+- actions:
+  order:
+
+- actions:
+  - action: register
+    name: alpha
+    command: ALPHA
+  - action: register
+    name: beta
+    command: BETA
+  order:
+  - name: alpha
+    command: ALPHA
+  - name: beta
+    command: BETA
+
+- actions:
+  - action: register
+    name: alpha
+    command: ALPHA
+  - action: register
+    name: beta
+    command: BETA
+  - action: prepend
+    name: beta
+  - action: append
+    name: alpha
+  order:
+  - name: beta
+    command: BETA
+  - name: alpha
+    command: ALPHA
+
+- actions:
+  - action: register
+    name: alpha
+    command: ALPHA
+  - action: register
+    name: beta
+    command: BETA
+  - action: remove
+    name: alpha
+  order:
+  - name: beta
+    command: BETA
+
+
+# Unknown action
+- actions:
+  - action: register
+    name: alpha
+    command: ALPHA
+  - action: unknown
+  - action: register
+    name: beta
+    command: BETA
+  order:
+  - name: alpha
+    command: ALPHA
+  - name: beta
+    command: BETA
+
+# Missing attribute (remove.name):
+- actions:
+  - action: register
+    name: alpha
+    command: ALPHA
+  - action: remove
+  - action: register
+    name: beta
+    command: BETA
+  order:
+  - name: alpha
+    command: ALPHA
+  - name: beta
+    command: BETA
+
+# Missing attribute (register.name):
+- actions:
+  - action: register
+    command: ALPHA
+  - action: register
+    name: beta
+    command: BETA
+  order:
+  - name: beta
+    command: BETA
+
+# Missing attribute (register.command):
+- actions:
+  - action: register
+    name: alpha
+  - action: register
+    name: beta
+    command: BETA
+  order:
+  - name: beta
+    command: BETA
+
+
+# With shell option:
+- actions:
+  - action: register
+    name: alpha
+    command: ALPHA
+    shell: True
+  - action: register
+    name: beta
+    command: BETA
+  order:
+  - name: alpha
+    command: ALPHA
+    shell: True
+  - name: beta
+    command: BETA
+    shell: False

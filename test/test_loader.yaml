@@ -1,0 +1,100 @@
+# names only
+- file: names_only.yaml
+  expected:
+    - name: Algorithms
+    - name: Formal Languages
+    - name: Operating Systems
+    - name: Algebra
+
+# names only, twice the same file
+- file: names_only.yaml
+  further-files: [names_only.yaml]
+  expected:
+    - name: Algorithms
+    - name: Formal Languages
+    - name: Operating Systems
+    - name: Algebra
+
+# names and some other info
+- file: names_connect_password.yaml
+  expected:
+    - name: Algorithms
+      url: http://teach.org/algorithms
+      password: Algo123
+    - name: Formal Languages
+      url: https://en.wikipedia.org/
+    - name: Operating Systems
+      password: L1nux_Rules
+    - name: Algebra
+      zoom-id: 123456789
+
+# strip and infer "zoom" attributes
+- file: to_clean.yaml
+  config:
+    meetings:
+      attributes:
+        - action: strip
+          texts: ["-", " "]
+          input: zoom-id
+
+        - action: infer
+          name: zoom-url
+          value: https://zoom.us/j/{zoom-id}
+  expected:
+    - name: Algorithms
+      zoom-id: 123456789
+      zoom-url: https://zoom.us/j/123456789
+    - name: Formal Languages
+      zoom-id: 111222333
+      zoom-url: https://zoom.us/j/111222333
+
+# load some mappings defined twice from different files
+- file: names_connect_password.yaml
+  further-files: [names_connect_password2.yaml]
+  expected:
+    - name: Algorithms
+      url: http://teach.org/algorithms
+      password: Algo123
+    - name: Formal Languages
+      url: https://en.wikipedia.org/
+    - name: Operating Systems
+      password: L1nux_Rules
+    - name: Algebra
+      zoom-id: 123456789
+
+    - name: Formal Languages
+      url: https://en.wikipedia.org/
+      description: whatever
+    - name: Algebra
+
+# test handling of synonyms for loaded
+- file: synonyms.yaml
+  config:
+    meetings:
+      attributes:
+        - action: synonym
+          output: name
+          inputs:
+            - title
+            - Titel
+
+        - action: synonym
+          output: password
+          inputs:
+            - pwd
+            - Kennwort
+            - passcode
+
+        - action: synonym
+          output: url
+          inputs:
+            - "*url"
+
+  expected:
+    - name: Algorithms
+      zoom-id: 123-456-789
+      password: 112233
+
+    - name: Formal Languages
+      password: uns1cher
+      url: https://en.wikipedia.org/wiki/Formal_language

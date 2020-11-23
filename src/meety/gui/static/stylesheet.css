@@ -1,0 +1,46 @@
+QWidget {
+	background: #444;
+	color: #eee;
+
+	border: 1px solid #444;
+}
+
+QLineEdit.search {
+	border: 1px solid #444;
+	margin-bottom: 10px;
+	background: #ccc;
+	color: #222;
+	font: italic;
+}
+
+QCheckBox::indicator {
+	border: 2px solid #aaa;
+}
+
+QCheckBox::indicator:unchecked {
+	background: #444;
+}
+
+QCheckBox::indicator:unchecked:hover {
+	background: #555;
+}
+
+QCheckBox::indicator:unchecked:pressed {
+	background: #555;
+}
+
+QCheckBox::indicator:checked {
+	background: #777;
+}
+
+QCheckBox::indicator:checked:hover {
+	background: #888;
+}
+
+QCheckBox::indicator:checked:pressed {
+	background: #888;
+}
+
+QPushButton.info {
+	font: bold;
+}

@@ -1,0 +1,9 @@
+- name: Algebra 1
+  tutor: Anna
+
+- name: Algebra 2
+  tutor: Linus
+
+- name: Linear Algebra 1
+  tutor: Carla
+  description: Say something about linear algebra here.

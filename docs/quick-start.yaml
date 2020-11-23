@@ -1,0 +1,24 @@
+# Example meetings specifications in YAML
+# Text after '#' is ignored by the application
+
+# FIRST MEETING (Coffee round with colleagues, every morning)
+- name: Coffee
+  zoom-url: https://zoom.us/j/123456789
+  prefer: Monday to Friday, 9 to 10 o'clock
+  # short format for time specifications (also for other languages)
+
+# SECOND MEETING (lecture, each Tuesday and Thursday)
+- name: My favourite lecture
+  url: https://my-university.edu/my-fav-lecture
+  prefer:
+    - weekday: Tuesday
+      time: 12:00 - 14:00
+      date: 2020-10-01 - 2021-03-31
+    - weekday: Thursday
+      time: 14:00 - 16:00
+      date: 2020-10-01 - 2021-03-31
+  # explicit format for time specifications (also for other languages)
+
+# THIRD MEETING (without time preferences)
+- name: Another meeting
+  zoom-id: 987-654-321

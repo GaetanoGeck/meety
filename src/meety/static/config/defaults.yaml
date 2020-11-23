@@ -1,0 +1,124 @@
+######################################################################
+# Meety - default configuration
+# 
+# This is configuration is loaded first. Its settings may be over-
+# written by the user configuration and additional configurations (for
+# languages, colour schemes, ...) that are loaded afterwards.
+######################################################################
+
+additional_config:
+  # languages --------------------------
+  lang_de: yes # German
+  lang_en: yes # English
+  lang_es: yes # Spanish
+  lang_fr: yes # French
+  lang_it: yes # Italian
+  # time formats -----------------------
+  time_dmy: no # DD/MM/YYYY
+  time_mdy: no # MM/DD/YYYY
+  # colour schemes ---------------------
+  col_magenta: yes
+
+meetings:
+  preferences:
+    date: 
+      start_delta:
+        hours: -1
+      end_delta:
+        hours: +1
+    time: 
+      start_delta:
+        minutes: -5
+      end_delta:
+        minutes: +5
+
+  attributes:
+    - action: strip
+      texts: ["-", " "]
+      input: zoom-id
+
+    - action: infer
+      name: zoom-url
+      value: https://zoom.us/j/{zoom-id}
+
+    # Replace Zoom-URLs to personal rooms like
+    #   https://zoom.us/my/your.name?pwd=safe
+    # by
+    #   https://zoom.us/j/<zoom-id>?pwd=safe
+    # if the <Zoom-ID> is provided.
+    # 
+    # The former URLs seem not to be respected
+    # by the Zoom app.
+    - action: replace
+      input: zoom-url
+      expression: '(https://[^/]+)/my/[^?]+\?(.*)'
+      substitute: '\1/j/{zoom-id}?\2'
+
+    # Replace Zoom-URLs to webinars like
+    #   https://zoom.us/s/123456789?pwd=safe
+    # by
+    #   https://zoom.us/j/123456789?pwd=safe
+    # unconditionally.
+    # 
+    # The former URLs seem to be not suitable
+    # to join ('j') a meeting with the Zoom app.
+    - action: replace
+      input: zoom-url
+      expression: '(https://[^/]+)/s/(.*)'
+      substitute: '\1/j/\2'
+
+connect:
+  handlers:
+    # ZOOM -------------------------------------------------
+    # Prefer app over webbrowser, if available
+    - action: register
+      name: Zoom (app)
+      command: zoom --url={zoom-url}
+      system: Linux
+      installed: zoom
+
+    - action: register
+      name: Zoom (app)
+      command: open -a zoom.us {zoom-url}
+      system: Darwin
+      installed: zoom.us.app
+
+    - action: register
+      name: Zoom (app)
+      command: start zoom --url={zoom-url}
+      shell: True
+      system: Windows
+      installed: zoom.exe
+
+    # Use webbrowser otherwise
+    - action: register
+      name: Zoom (browser)
+      command: xdg-open {zoom-url}
+
+    - action: register
+      name: Web (URL)
+      command: start {url}
+      shell: True
+      system: Windows
+
+    - action: register
+      name: Zoom (browser)
+      command: open {zoom-url}
+      system: Darwin
+
+    # Arbitrary URL ----------------------------------------
+    - action: register
+      name: Web (URL)
+      command: xdg-open {url}
+      system: Linux
+
+    - action: register
+      name: Web (URL)
+      command: open {url}
+      system: Darwin
+
+    - action: register
+      name: Web (URL)
+      command: start {url}
+      shell: True
+      system: Windows

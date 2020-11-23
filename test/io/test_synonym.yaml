@@ -1,0 +1,145 @@
+# ALL LEVELS -----------------------------------------------
+# no input key
+- input:
+    foo: 1
+    bar: 2
+  expected:
+    foo: 1
+    bar: 2
+
+# one input key on first level, in1
+- input:
+    in1: 1
+    bar: 2
+  expected:
+    out: 1
+    bar: 2
+
+# one input key on first level, in2
+- input:
+    foo: 1
+    in2: 2
+  expected:
+    foo: 1
+    out: 2
+
+# two input keys on first level
+- input:
+    in1: 1
+    in2: 2
+  expected:
+    out: 1
+    in2: 2
+
+# one input key on second level, in1
+- input:
+    foo: 1
+    bar:
+      in1: 21
+      bar: 22
+  expected:
+    foo: 1
+    bar:
+      out: 21
+      bar: 22
+
+# one input key on second level, in1
+- input:
+    foo: 1
+    bar:
+      foo: 21
+      in1: 22
+  expected:
+    foo: 1
+    bar:
+      foo: 21
+      out: 22
+
+# two input keys on first and second level
+- input:
+    in2: 1
+    bar:
+      foo: 21
+      in1: 22
+  expected:
+    out: 1
+    bar:
+      foo: 21
+      out: 22
+
+
+# ONLY LEVEL 1 ---------------------------------------------
+# no input key
+- input:
+    foo: 1
+    bar: 2
+  expected:
+    foo: 1
+    bar: 2
+  level: 1
+
+# one input key on first level, in1
+- input:
+    in1: 1
+    bar: 2
+  expected:
+    out: 1
+    bar: 2
+  level: 1
+
+# one input key on first level, in2
+- input:
+    foo: 1
+    in2: 2
+  expected:
+    foo: 1
+    out: 2
+  level: 1
+
+# two input keys on first level
+- input:
+    in1: 1
+    in2: 2
+  expected:
+    out: 1
+    in2: 2
+  level: 1
+
+# one input key on second level, in1
+- input:
+    foo: 1
+    bar:
+      in1: 21
+      bar: 22
+  expected:
+    foo: 1
+    bar:
+      in1: 21
+      bar: 22
+  level: 1
+
+# one input key on second level, in1
+- input:
+    foo: 1
+    bar:
+      foo: 21
+      in2: 22
+  expected:
+    foo: 1
+    bar:
+      foo: 21
+      in2: 22
+  level: 1
+
+# two input keys on first and second level
+- input:
+    in2: 1
+    bar:
+      foo: 21
+      in1: 22
+  expected:
+    out: 1
+    bar:
+      foo: 21
+      in1: 22
+  level: 1

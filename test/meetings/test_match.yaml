@@ -1,0 +1,250 @@
+# Weekdays
+######################################################################
+
+- prefer:
+    weekday: Monday
+  tests:
+  - date: "2020-10-19 11:54"
+    expected: True 
+
+- prefer:
+    weekday: 1
+  tests:
+  - date: "2020-10-19 11:54"
+    expected: True 
+
+- prefer:
+    weekday: Tuesday
+  tests:
+  - date: "2020-10-19 11:54"
+    expected: False 
+
+- prefer:
+    weekday: Monday - Wednesday
+  tests:
+  - date: "2020-10-19 11:54"
+    expected: True 
+  - date: "2020-10-20 11:54"
+    expected: True 
+  - date: "2020-10-21 11:54"
+    expected: True 
+  - date: "2020-10-18 11:54"
+    expected: False 
+  - date: "2020-10-22 11:54"
+    expected: False 
+
+# Invalid:
+- prefer:
+    weekday: Manic Monday
+  tests:
+  - date: "2020-10-19 11:54"
+    expected: False 
+
+- prefer:
+    weekday: Monday - Someday
+  tests:
+  - date: "2020-10-19 11:54"
+    expected: True 
+  - date: "2020-10-18 11:54"
+    expected: False 
+  - date: "2020-10-20 11:54"
+    expected: False 
+
+- prefer:
+    weekday: Monday to Someday
+  tests:
+  - date: "2020-10-19 11:54"
+    expected: True 
+  - date: "2020-10-18 11:54"
+    expected: False 
+  - date: "2020-10-20 11:54"
+    expected: False 
+
+- prefer:
+    weekday: Monday, Someday
+  tests:
+  - date: "2020-10-19 11:54"
+    expected: True 
+
+- prefer:
+    weekday: Someday, Monday
+  tests:
+  - date: "2020-10-19 11:54"
+    expected: True 
+
+
+# Time
+######################################################################
+- prefer:
+    time: "11:54"
+  tests:
+  - date: "2020-10-19 11:54"
+    expected: True 
+
+- prefer:
+    time: "11:53"
+  tests:
+  - date: "2020-10-19 11:54"
+    expected: False 
+
+- prefer:
+    time: "11:50 - 12"
+  tests:
+  - date: "2020-10-19 11:54"
+    expected: True 
+
+- prefer:
+    time: "11:50 - 12"
+  tests:
+  - date: "2020-10-19 11:49"
+    expected: False 
+
+# Invalid
+- prefer:
+    time: noon
+  tests:
+  - date: "2020-10-19 11:49"
+    expected: False 
+
+- prefer:
+    time: "noon, 11:49"
+  tests:
+  - date: "2020-10-19 11:49"
+    expected: True 
+
+- prefer:
+    time: "11:49, noon"
+  tests:
+  - date: "2020-10-19 11:49"
+    expected: True 
+
+# non-ISO (dot)
+- prefer:
+    time: "11.54"
+  tests:
+  - date: "2020-10-19 11:54"
+    expected: True 
+
+- prefer:
+    time: "11.53"
+  tests:
+  - date: "2020-10-19 11:54"
+    expected: False 
+
+# non-ISO (hour only)
+- prefer:
+    time: 12
+  tests:
+  - date: "2020-10-19 12:00"
+    expected: True 
+
+- prefer:
+    time: 12
+  tests:
+  - date: "2020-10-19 12:01"
+    expected: False 
+
+- prefer:
+    time: 12
+  tests:
+  - date: "2020-10-19 11:59"
+    expected: False 
+
+- prefer:
+    time: 12
+  tests:
+  - date: "2020-10-19 11:59"
+    expected: False 
+
+# non-ISO (range of hour only)
+- prefer:
+    time: 12 - 14
+  tests:
+  - date: "2020-10-19 12:00"
+    expected: True 
+
+- prefer:
+    time: 12 - 14
+  tests:
+  - date: "2020-10-19 12:01"
+    expected: True 
+
+- prefer:
+    time: 12 - 14
+  tests:
+  - date: "2020-10-19 13:00"
+    expected: True 
+
+- prefer:
+    time: 12 - 14
+  tests:
+  - date: "2020-10-19 13:59"
+    expected: True 
+
+- prefer:
+    time: 12 - 14
+  tests:
+  - date: "2020-10-19 14:01"
+    expected: False 
+
+
+# Date:
+######################################################################
+- prefer:
+    date: 2020-10-19
+  tests:
+  - date: "2020-10-19 11:54"
+    expected: True 
+
+- prefer:
+    date: 2020-10-20
+  tests:
+  - date: "2020-10-19 11:54"
+    expected: False 
+
+- prefer:
+    date: 2020-10-18 - 2020-10-20
+  tests:
+  - date: "2020-10-19 11:54"
+    expected: True 
+
+- prefer:
+    date: 2020-10-18 - 2020-10-20
+  tests:
+  - date: "2020-10-17 11:54"
+    expected: False 
+
+
+# Combined
+######################################################################
+- prefer:
+    weekday: Monday
+    date: 2020-10-19
+    time: 11:00 - 12:00
+  tests:
+  - date: "2020-10-19 11:54"
+    expected: True 
+
+- prefer:
+    weekday: Monday
+    date: 2020-10-19
+    time: 11:00 - 11:30
+  tests:
+  - date: "2020-10-19 11:54"
+    expected: False 
+
+- prefer:
+    weekday: Tuesday
+    date: 2020-10-19
+    time: 11:00 - 12:00
+  tests:
+  - date: "2020-10-19 11:54"
+    expected: False 
+
+- prefer:
+    weekday: Tuesday
+    date: 2020-10-18
+    time: 11:00 - 12:00
+  tests:
+  - date: "2020-10-19 11:54"
+    expected: False 

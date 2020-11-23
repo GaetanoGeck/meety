@@ -1,0 +1,60 @@
+meetings:
+  preferences:
+    skip words: [von]
+    range words: [bis]
+    list words: [und]
+    time:
+      format:
+        - "%H uhr"
+        - "%H:%M uhr"
+        - "%H.%M uhr"
+        - "%H uhr %M"
+    weekday:
+      names:
+        1: [Montag, Mo]
+        2: [Dienstag, Di]
+        3: [Mittwoch, Mi]
+        4: [Donnerstag, Do]
+        5: [Freitag, Fr]
+        6: [Samstag, Sa]
+        7: [Sonntag, So]
+
+  attributes:
+    - action: synonym
+      output: name
+      inputs:
+        - titel
+        - meeting
+
+    - action: synonym
+      output: password
+      inputs:
+        - "*kennwort*"
+        - "*passwort*"
+
+    - action: synonym
+      output: prefer
+      level: 1
+      inputs:
+        - zeit
+        - zeiten
+        - wann
+
+    - action: synonym
+      output: weekday
+      inputs:
+        - wochentag
+        - tag
+        - tage
+
+    - action: synonym
+      output: date
+      inputs:
+        - datum
+
+    - action: synonym
+      output: time
+      inputs:
+        - zeit
+        - zeiten
+      level: 2

@@ -1,0 +1,7 @@
+if [ "$*" == "" ]; then
+    targets="test"
+else
+    targets="$*"
+fi
+
+cd src && python3 -m pytest "$targets"

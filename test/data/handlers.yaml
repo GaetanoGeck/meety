@@ -1,0 +1,15 @@
+- name: Multiple handlers
+  url: https://en.wikipedia.org/
+  zoom-id: 123 456 789
+
+- name: One handler
+  url: https://de.wikipedia.org/
+
+- name: No handler
+
+- name: Non-existing program
+  pseudo: foo-bar
+
+- name: With password
+  password: N0tS4fe
+  url: https://fr.wikipedia.org/

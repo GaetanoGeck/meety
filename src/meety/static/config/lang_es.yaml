@@ -1,0 +1,49 @@
+meetings:
+  preferences:
+    skip words: [de]
+    range words: [hasta]
+    list words: [y]
+    time:
+      format:
+        - "%H.%M horas"
+        - "las %H.%M horas"
+    weekday:
+      names:
+        1: [lunes, Lun]
+        2: [martes, Mar]
+        3: [miércoles, Mié]
+        4: [jueves, Jue]
+        5: [viernes, Vie]
+        6: [sábado, Sáb]
+        7: [domingo, Dom]
+
+  attributes:
+    - action: synonym
+      output: name
+      inputs:
+        - nombre
+        - título
+
+    - action: synonym
+      output: prefer
+      level: 1
+      inputs:
+        - tiempo
+        - cuándo
+
+    - action: synonym
+      output: weekday
+      inputs:
+        - día
+        - días
+
+    - action: synonym
+      output: date
+      inputs:
+        - fecha
+
+    - action: synonym
+      output: time
+      inputs:
+        - tiempo
+      level: 2

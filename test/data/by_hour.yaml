@@ -1,0 +1,95 @@
+- name: Zero
+  prefer:
+    time: 00:00 - 00:59
+
+- name: One
+  prefer:
+    time: 01:00 - 01:59
+
+- name: Two
+  prefer:
+    time: 02:00 - 02:59
+
+- name: Three
+  prefer:
+    time: 03:00 - 03:59
+
+- name: Four
+  prefer:
+    time: 04:00 - 04:59
+
+- name: Five
+  prefer:
+    time: 05:00 - 05:59
+
+- name: Six
+  prefer:
+    time: 06:00 - 06:59
+
+- name: Seven
+  prefer:
+    time: 07:00 - 07:59
+
+- name: Eight
+  prefer:
+    time: 08:00 - 08:59
+
+- name: Nine
+  prefer:
+    time: 09:00 - 09:59
+
+- name: Ten
+  prefer:
+    time: 10:00 - 10:59
+
+- name: Eleven
+  prefer:
+    time: 11:00 - 11:59
+
+- name: Twelve
+  prefer:
+    time: 12:00 - 12:59
+
+- name: Thirteen
+  prefer:
+    time: 13:00 - 13:59
+
+- name: Fourteen
+  prefer:
+    time: 14:00 - 14:59
+
+- name: Fifteen
+  prefer:
+    time: 15:00 - 15:59
+
+- name: Sixteen
+  prefer:
+    time: 16:00 - 16:59
+
+- name: Seventeen
+  prefer:
+    time: 17:00 - 17:59
+
+- name: Eighteen
+  prefer:
+    time: 18:00 - 18:59
+
+- name: Nineteen
+  prefer:
+    time: 19:00 - 19:59
+
+- name: Twenty
+  prefer:
+    time: 20:00 - 20:59
+
+- name: Twenty-one
+  prefer:
+    time: 21:00 - 21:59
+
+- name: Twenty-two
+  prefer:
+    time: 22:00 - 22:59
+
+- name: Twenty-three
+  prefer:
+    time: 23:00 - 23:59

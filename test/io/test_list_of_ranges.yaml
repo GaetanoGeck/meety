@@ -1,0 +1,20 @@
+- input: Monday, Tuesday
+  expected: Monday, Tuesday
+  
+- input: from Monday till Tuesday
+  expected: Monday - Tuesday
+
+- input: Monday and Tuesday
+  expected: Monday, Tuesday
+
+- input: Monday, Tuesday and Thursday
+  expected: Monday, Tuesday, Thursday
+
+- input: Montag und Dienstag
+  expected: Montag, Dienstag
+
+- input: von Montag bis Donnerstag
+  expected: Montag - Donnerstag
+
+- input: Montag, Dienstag und Donnerstag
+  expected: Montag, Dienstag, Donnerstag

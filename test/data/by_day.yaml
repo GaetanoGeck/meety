@@ -1,0 +1,27 @@
+- name: Monday
+  prefer:
+    weekday: Monday
+
+- name: Tuesday
+  prefer:
+    weekday: Tuesday
+
+- name: Wednesday
+  prefer:
+    weekday: Wednesday
+
+- name: Thursday
+  prefer:
+    weekday: Thursday
+
+- name: Friday
+  prefer:
+    weekday: Friday
+
+- name: Saturday
+  prefer:
+    weekday: Saturday
+
+- name: Sunday
+  prefer:
+    weekday: Sunday

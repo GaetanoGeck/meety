@@ -1,0 +1,44 @@
+- name: foo
+  texts: ["X", "Y"]
+  input:
+    foo: alpha
+    bar: beta
+  expected:
+    foo: alpha
+    bar: beta
+
+- name: foo
+  texts: ["X", "Y"]
+  input:
+    foo: abcXdef
+    bar: beta
+  expected:
+    foo: abcdef
+    bar: beta
+
+- name: foo
+  texts: ["X", "Y"]
+  input:
+    foo: XabcXdef
+    bar: beta
+  expected:
+    foo: abcdef
+    bar: beta
+
+- name: foo
+  texts: ["X", "Y"]
+  input:
+    foo: abcXdefX
+    bar: beta
+  expected:
+    foo: abcdef
+    bar: beta
+
+- name: foo
+  texts: ["X", "Y"]
+  input:
+    foo: YYYabcXdefX
+    bar: beta
+  expected:
+    foo: abcdef
+    bar: beta

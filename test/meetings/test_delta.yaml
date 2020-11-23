@@ -1,0 +1,76 @@
+date:
+  # DAY-WISE -------------------------------------
+  - spec: 2020-11-12
+    config:
+      start_delta:
+        days: -1
+      end_delta:
+        days: +1
+    tests:
+      # at value
+      - test_date: 2020-11-12
+        expected: True
+      # at lower bound
+      - test_date: 2020-11-11
+        expected: True
+      # before lower bound
+      - test_date: 2020-11-10
+        expected: False
+      # at upper bound
+      - test_date: 2020-11-13
+        expected: True
+      # after upper bound
+      - test_date: 2020-11-14
+        expected: False
+
+  # HOUR-WISE ------------------------------------
+  # at lower bound
+  - spec: 2020-11-12
+    config:
+      start_delta:
+        hours: -1
+      end_delta:
+        hours: +1
+    tests:
+      - test_date: 2020-11-11
+        test_time: 23:01
+        expected: True
+      # before lower bound
+      - test_date: 2020-11-11
+        test_time: 22:59
+        expected: False
+      # at upper bound
+      - test_date: 2020-11-13
+        test_time: 00:59
+        expected: True
+      # after upper bound
+      - test_date: 2020-11-13
+        test_time: 01:01
+        expected: False
+
+time:
+  # at start
+  - spec: 11:00 - 12:00
+    config:
+      start_delta:
+        minutes: -5
+      end_delta:
+        minutes: +5
+    tests:
+    - test_time: 11:00
+      expected: True
+    # at lower bound
+    - test_time: 10:55
+      expected: True
+    # before lower bound
+    - test_time: 10:54
+      expected: False
+    # at end
+    - test_time: 12:00
+      expected: True
+    # at upper bound
+    - test_time: 12:05
+      expected: True
+    # after upper bound
+    - test_time: 12:06
+      expected: False

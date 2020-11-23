@@ -1,0 +1,94 @@
+- file: names_only.yaml
+  query: ["nomatch"]
+  type: all-matching
+  rated: []
+
+- file: names_only.yaml
+  query: ["nomatch"]
+  type: all
+  rated:
+    - Algorithms
+    - Formal Languages
+    - Operating Systems
+    - Algebra
+
+- file: names_only.yaml
+  query: ["al"]
+  type: all-matching
+  rated:
+    - Algorithms
+    - Formal Languages
+    - Algebra
+
+- file: names_only.yaml
+  query: ["al"]
+  type: all
+  rated:
+    - Algorithms
+    - Formal Languages
+    - Algebra
+    - Operating Systems
+
+- file: names_only.yaml
+  query: ["alg"]
+  type: all-matching
+  rated:
+    - Algorithms
+    - Algebra
+
+- file: names_only.yaml
+  query: ["alg"]
+  type: all
+  rated:
+    - Algorithms
+    - Algebra
+    - Formal Languages
+    - Operating Systems
+
+- file: rating.yaml
+  query: ["linear", "algebra"]
+  type: all
+  rated:
+    - Linear Algebra 1
+    - Algebra 1
+    - Algebra 2
+
+- file: rating.yaml
+  query: ["algebra", "2"]
+  rated:
+    - Algebra 2
+    - Algebra 1
+    - Linear Algebra 1
+
+- file: rating.yaml
+  query: ["algebra", "Carla"]
+  rated:
+    - Linear Algebra 1
+    - Algebra 1
+    - Algebra 2
+
+- file: rating.yaml
+  query: ["algebra", "Carla"]
+  type: only-best
+  rated:
+    - Linear Algebra 1
+
+- file: rating.yaml
+  query: ["algebra", "lin"]
+  rated:
+    - Algebra 2
+    - Linear Algebra 1
+    - Algebra 1
+
+- file: rating.yaml
+  query: ["algebra", "lin"]
+  type: only-best
+  rated:
+    - Algebra 2
+    - Linear Algebra 1
+
+- file: rating.yaml
+  query: ["algebra", "line"]
+  type: only-best
+  rated:
+    - Linear Algebra 1

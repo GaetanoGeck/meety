@@ -1,0 +1,14 @@
+- name: Algorithms
+  url: http://my-university.edu/algorithms
+  prefer:
+    - weekday: Tuesday
+      time: 12:15 - 13:45
+    - weekday: Thursday
+      time: 14:15 - 15:45
+
+- name: Coffee
+  zoom-id: 123456789
+  password: 1234
+  prefer:
+    weekday: Monday - Friday
+    time: 09:00 - 09:30
