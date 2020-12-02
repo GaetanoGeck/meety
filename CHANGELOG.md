@@ -1,4 +1,5 @@
-- **version 0.9.0** on 2020-12-02: Fix user configuration template
+- **version 0.9.2** on 2020-12-02: Load configuration before preparation of arguments
+- **version 0.9.1** on 2020-12-02: Fix user configuration template
     - do not disable language packs
     - use double dashes for long options
 - **version 0.9.0** on 2020-12-01: First public release

@@ -9,7 +9,7 @@ from meety.loader import Loader
 from meety.logging import log
 
 PROGRAM = "meety"
-VERSION = "0.9.1"
+VERSION = "0.9.2"
 SUMMARY = f"This is {PROGRAM}, version {VERSION}."
 URL = "https://github.com/GaetanoGeck/meety/"
 
@@ -29,9 +29,9 @@ def start_gui():
 
 def start_app(app):
     config = _prepare_config(PROGRAM)
+    config.reload()
     args = _prepare_args(app, config)
     _prepare_logger(args)
-    config.reload()
 
     config.apply()
     loader = _load(args)
