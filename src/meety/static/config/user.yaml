@@ -26,8 +26,8 @@ cli:
   args:
     # data -------------------------------------------------
     #- "--only-explicit" # only include meeting files in the arguments
-    #- "-file PATH" # include meeting file on path PATH
-    #- "-directory PATH" # include YAML files in directory PATH
+    #- "--file PATH" # include meeting file on path PATH
+    #- "--directory PATH" # include YAML files in directory PATH
     #
     # query ------------------------------------------------
     #- "--first" # choose first, if there are multiple matches 
@@ -70,8 +70,8 @@ gui:
   args:
     # most like for cli.args, as above
     # gui-specific -----------------------------------------
-    #- "-window-width WIDTH" # set window width to WIDTH
-    #- "-window-height HEIGHT" # set window height to HEIGHT
+    #- "--window-width WIDTH" # set window width to WIDTH
+    #- "--window-height HEIGHT" # set window height to HEIGHT
 
   # Styling of meeting list entries
   # 
