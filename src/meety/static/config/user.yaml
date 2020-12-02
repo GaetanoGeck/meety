@@ -7,11 +7,11 @@
 
 additional_config:
   # languages --------------------------
-  lang_de: no # German
-  lang_en: yes # English
-  lang_es: no # Spanish
-  lang_fr: no # French
-  lang_it: no # Italian
+  #lang_de: no # German
+  #lang_en: no # English
+  #lang_es: no # Spanish
+  #lang_fr: no # French
+  #lang_it: no # Italian
   # time formats -----------------------
   #time_dmy: no # DD/MM/YYYY
   #time_mdy: no # MM/DD/YYYY
