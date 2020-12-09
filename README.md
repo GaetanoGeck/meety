@@ -53,6 +53,13 @@ Just follow the three steps below.
 
 Add a YAML file with meeting specifications to your home directory. You may find it helpful to start with a [template](./docs/quick-start.yaml) whose contents are also shown below.
 
+**Notes:**
+- With the default options, the filename is of no importance as long it has extension `.yaml` or `.yml`.
+- The home directory is usually
+	- `/home/<username>/` on Linux,
+	- `/Users/<username>/` on MacOS and
+	- `C:\Users\<username>\` on Windows.
+- _Meety_ can also load files from other directories than your home directory (and can also ignore those in your home directory). For instance, you can load meetings from file `~/meetings/conferenceA.yaml` only by invoking _Meety_ with arguments `-e -f ~/meetings/conferenceA.yaml`. This is described in more detail in the [documentation](./docs/select-files.md).
 
 ```text
 # Example meeting specifications in YAML
@@ -91,8 +98,6 @@ This is described in more detail in the [documentation](./docs/configuration.md#
 
 **Support for other languages.**
 Inferred attributes can also be used to make other words understood by _Meety_, in particular words from other languages. _Meety_ currently ships with some English, French, German, Italian and Spanish definitions (which can be enabled or disabled via the configuration), see the [documentation](./docs/configuration.md#languages) for more information.
-
-_Meety_ can also load files from other directories than your home directory (and can also ignore those in your home directory). This, again, is described in the [documentation](./docs/select-files.md).
 
 ### Step 3/3: Run _Meety_
 
