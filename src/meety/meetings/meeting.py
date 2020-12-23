@@ -86,7 +86,7 @@ class Meeting:
 
     def input_data_to_str(self):
         return yaml.dump(
-            [self.input_data[0]],
+            self.input_data[0],
             default_flow_style=False
         )
 
@@ -96,7 +96,7 @@ class Meeting:
 
     def data_to_str(self):
         return yaml.dump(
-            [self.data],
+            self.data,
             default_flow_style=False
         )
 
