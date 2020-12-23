@@ -1,5 +1,6 @@
 import yaml
 
+from meety.io import is_url
 from meety.logging import log
 from meety.meetings.preferences import TimePreference
 
@@ -31,6 +32,7 @@ class Meeting:
 
         self._init_preferences()
         self._init_query_entries()
+        self._init_url_entries()
 
     def _init_preferences(self):
         self._preferences = []
@@ -59,6 +61,12 @@ class Meeting:
         for (key, value) in self._clean_data.items():
             if not isinstance(value, (list, dict)):
                 self._query_entries.append(str(value).casefold())
+
+    def _init_url_entries(self):
+        self._urls = []
+        for (key, value) in self._clean_data.items():
+            if isinstance(value, str) and is_url(value):
+                self._urls.append(value)
 
     @property
     def name(self):
@@ -95,6 +103,10 @@ class Meeting:
     @property
     def query_entries(self):
         return self._query_entries
+
+    @property
+    def urls(self):
+        return self._urls
 
     def match_time(self, when):
         """Tests whether any of the time preferences is matched for the

@@ -1,3 +1,6 @@
+from urllib.parse import urlparse
+
+
 def expect_dict(datum, otherwise={}):
     if isinstance(datum, dict):
         return datum
@@ -25,6 +28,15 @@ def str_is_true(text):
 
 def str_is_false(text):
     return not str_is_true(text)
+
+
+def is_url(text):
+    try:
+        url = urlparse(text, allow_fragments=False)
+    except ValueError:
+        return False
+    else:
+        return bool(url.netloc)
 
 
 def replace_words_by(text, words, replacement):
