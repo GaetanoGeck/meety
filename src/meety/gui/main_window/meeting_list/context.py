@@ -17,13 +17,16 @@ class MeetingItemMenu(QMenu):
 
     def _add_actions(self):
         self._actions = {}
-        self.addAction("Copy &input data", self._on_copy_input)
-        self.addAction("Copy &derived data", self._on_copy_derived)
-        self._add_handler_actions()
-        self.addSeparator()
+        if self._meeting:
+            self.addAction("Copy &input data", self._on_copy_input)
+            self.addAction("Copy &derived data", self._on_copy_derived)
+            self._add_handler_actions()
+            self.addSeparator()
         self.addAction("&Reload all meetings", self._on_reload)
 
     def _add_handler_actions(self):
+        if self._meeting is None:
+            return
         handlers = connect.applicable_handlers(self._meeting)
         if len(handlers) > 0:
             self.addSeparator()

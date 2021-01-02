@@ -106,8 +106,10 @@ class MeetingList(QWidget):
 
     def _context_menu_on_list(self, source, event):
         item = source.itemAt(event.pos())
-        rmeeting = item.data(Qt.UserRole)
-        menu = MeetingItemMenu(rmeeting.meeting)
+        meeting = None
+        if item:
+            meeting = item.data(Qt.UserRole).meeting
+        menu = MeetingItemMenu(meeting)
         menu.handler_chosen.connect(self.handler_chosen.emit)
         menu.reload_requested.connect(self.reload_requested.emit)
         menu.exec_(event.globalPos())
