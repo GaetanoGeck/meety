@@ -55,7 +55,7 @@ class MeetyLogger:
         if not condition:
             return
         self._logger.error(message)
-        self._add(logging.DEBUG, message)
+        self._add(logging.ERROR, message)
 
     def exception(self, ex, warn=True):
         msg = f"Exception: {ex}"
