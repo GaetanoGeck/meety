@@ -18,10 +18,10 @@ class Meeting:
         """Test whether the given data is a dictionary that contains
         an entry 'name'.
         """
-        return all([
-            isinstance(data, dict),
-            "name" in [k.casefold() for k in data.keys()],
-        ])
+        return (
+            isinstance(data, dict)
+            and "name" in [k.casefold() for k in data.keys()]
+        )
 
     def __init__(self, data, clean_data):
         """Initialize meeting by dictionary `data`."""
