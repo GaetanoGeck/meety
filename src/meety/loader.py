@@ -60,8 +60,8 @@ class Loader:
             with open(filename) as file:
                 return yaml.load(file, Loader=yaml.BaseLoader)
         except FileNotFoundError as e:
-            log.warning(f"Meeting file '{filename}' does not found.")
-            log.exception(e)
+            log.warning(f"Meeting file '{filename}' does not exist.")
+            log.exception(e, warn=False)
             return {}
         except Exception as e:
             log.warning(f"Failed to load meetings from '{filename}'")
