@@ -57,9 +57,13 @@ class MeetyLogger:
         self._logger.error(message)
         self._add(logging.DEBUG, message)
 
-    def exception(self, ex):
-        self._logger.warning("Exception: %s" % ex)
-        self._logger.debug(traceback.print_exc())
+    def exception(self, ex, warn=True):
+        msg = f"Exception: {ex}"
+        if warn:
+            self._logger.warning(msg)
+        else:
+            self._logger.debug(msg)
+        self._logger.debug(traceback.format_exc())
 
     def propagate(self, flag):
         self._logger.propagate = flag
