@@ -32,6 +32,7 @@ def start_app(app):
     config.reload()
     args = _prepare_args(app, config)
     _prepare_logger(args)
+    log.info(f"command line arguments: {_input_args}")
 
     config.apply()
     loader = _load(args)
@@ -65,6 +66,8 @@ def _setup_argparser(app):
 def _combine_args(app, config, argparser):
     user_args = config.user.args(app.name) or []
     args = user_args + sys.argv[1:]
+    global _input_args
+    _input_args = args
     return argparser.parse_args(args)
 
 
