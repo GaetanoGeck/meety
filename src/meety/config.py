@@ -50,12 +50,26 @@ class Config:
         """Prepare loading of settings. They will become effective
         only after `reload()` and `apply()`.
         """
+        self._init_default_config()
+        self._init_user_config()
+        self._additional_configs = []
+
+    def _init_default_config(self):
         self._defaults = PartialConfig(
             "default",
             "defaults.yaml",
             open_static_config,
             True
         )
+
+    def _init_user_config(self):
+        alternative_user_config = os.environ.get("MEETY_USER_CONFIG")
+        if alternative_user_config is None:
+            self._init_user_config_standard()
+        else:
+            self._init_user_config_alternative(alternative_user_config)
+
+    def _init_user_config_standard(self):
         Config._ensure_user_config(
             path_static_config("user.yaml"),
             path_user_config("config.yaml")
@@ -65,7 +79,11 @@ class Config:
             "config.yaml",
             open_user_config
         )
-        self._additional_configs = []
+
+    def _init_user_config_alternative(self, path):
+        abspath = os.path.abspath(path)
+        log.info(f"Using alternative user configuration file '{abspath}'.")
+        self._user = PartialConfig("user", abspath)
 
     def reload(self):
         """(Re-)Load the configuration from the predefined files."""
