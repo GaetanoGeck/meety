@@ -61,7 +61,12 @@ def _create_app():
 
 def _create_window():
     global window
-    window = MainWindow(_args.window_width, _args.window_height)
+    window = MainWindow(
+        width=_args.window_width,
+        height=_args.window_height,
+        xpos=_args.window_xpos,
+        ypos=_args.window_ypos
+    )
     _connect_signals()
 
 

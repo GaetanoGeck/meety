@@ -16,3 +16,17 @@ def add_argparser_arguments(parser):
         type=int,
         default=400,
     )
+    parser.add_argument(
+        "-X", "--window-xpos",
+        help="set relative horizontal window position (between 0 and 1)",
+        action="store",
+        type=float,
+        default=0.5,
+    )
+    parser.add_argument(
+        "-Y", "--window-ypos",
+        help="set relative vertical window position (between 0 and 1)",
+        action="store",
+        type=float,
+        default=0.5,
+    )

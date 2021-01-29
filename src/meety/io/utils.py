@@ -30,6 +30,18 @@ def str_is_false(text):
     return not str_is_true(text)
 
 
+def ensure_between(value, at_least, at_most, on_wrong_type):
+    """Ensure that numerical value is in given bounds."""
+    try:
+        if value < at_least:
+            return at_least
+        if value > at_most:
+            return at_most
+        return value
+    except TypeError:
+        return on_wrong_type
+
+
 def is_url(text):
     try:
         url = urlparse(text, allow_fragments=False)

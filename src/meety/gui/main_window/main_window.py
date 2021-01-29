@@ -1,7 +1,11 @@
 import importlib.resources as resources
 
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import (
+    QPoint,
+    pyqtSignal,
+)
 from PyQt5.QtWidgets import (
+    QApplication,
     QVBoxLayout,
     QWidget,
 )
@@ -10,6 +14,7 @@ from meety.gui import static as gui_static
 from meety.gui.main_window.meeting_list import MeetingList
 from meety.gui.main_window.search import SearchWidget
 from meety.gui.main_window.status import StatusWidget
+from meety.io.utils import ensure_between
 
 
 class MainWindow(QWidget):
@@ -19,9 +24,10 @@ class MainWindow(QWidget):
     handler_chosen = pyqtSignal(object, name="handler_chosen")
     reload_requested = pyqtSignal(name="reload_requested")
 
-    def __init__(self, width, height):
+    def __init__(self, width, height, xpos=0.5, ypos=0.5):
         super().__init__()
         self.resize(width, height)
+        self.move(relative_screen_position(xpos, ypos, width, height))
         self._init_style()
         self._add_widgets()
         self._connect_widget_signals()
@@ -79,3 +85,24 @@ class MainWindow(QWidget):
 
     def clear_notifications(self):
         self._status.clear_notifications()
+
+
+def relative_screen_position(rel_xpos, rel_ypos, width, height):
+    screen = QApplication.desktop().screenGeometry()
+    screen.adjust(0, 0, -width, -height)
+    rel_xpos = ensure_between(
+        value=rel_xpos,
+        at_least=0.0,
+        at_most=1.0,
+        on_wrong_type=0.5
+    )
+    rel_ypos = ensure_between(
+        value=rel_ypos,
+        at_least=0.0,
+        at_most=1.0,
+        on_wrong_type=0.5
+    )
+    return QPoint(
+        rel_xpos * screen.width(),
+        rel_ypos * screen.height()
+    )
