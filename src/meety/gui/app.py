@@ -1,5 +1,7 @@
 """The graphical user interface program."""
 
+import signal
+
 from PyQt5.QtCore import QTimer
 from PyQt5.QtWidgets import QApplication
 
@@ -29,6 +31,7 @@ def run(args, loader):
     _create_window()
     _on_query_changed("")
 
+    _setup_interrupt_handling()
     window.show()
     app.exec_()
 
@@ -164,3 +167,12 @@ def connect_with_handler(handler, meeting):
             f"with handler <i>{handler.name}</i>.",
         ])
         window.notify(msg, handler.cmd)
+
+
+def _setup_interrupt_handling():
+    signal.signal(signal.SIGINT, _interrupt_handler)
+
+
+def _interrupt_handler(signum, frame):
+    print("Goodbye!")
+    QApplication.quit()
