@@ -86,13 +86,14 @@ class TimePreference:
         prefs = [p for p in self._named_preferences if str(p[1])]
         if len(prefs) == 0:
             return "no preference"
-        if len(prefs) == 1:
-            (name, pref) = prefs[0]
+
+        def describe(name, pref):
             return f"      {name}: {pref}"
+
+        if len(prefs) == 1:
+            return describe(prefs[0])
         else:
-            return "\n".join([
-                f"      {name}: {pref}" for (name, pref) in prefs
-            ])
+            return "\n".join([describe(n, p) for (n, p) in prefs])
 
     @property
     def is_nontrivial(self):
