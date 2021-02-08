@@ -22,7 +22,7 @@ def input_choice(valid_answers, default_answer, tries=3):
     return default_answer
 
 
-def input_choice_once(valid_answers, default_answer=3):
+def input_choice_once(valid_answers, default_answer):
     answer = input()
     if answer in valid_answers:
         return answer
