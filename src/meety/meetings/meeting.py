@@ -2,7 +2,10 @@ import yaml
 
 from meety.io import is_url
 from meety.logging import log
-from meety.meetings.preferences import TimePreference
+from meety.meetings.preferences import (
+    TimeMatchDescription,
+    TimePreference,
+)
 
 
 class Meeting:
@@ -112,7 +115,8 @@ class Meeting:
         """Tests whether any of the time preferences is matched for the
         given datetime `when`.
         """
-        return any([p.match(when) for p in self.preferences])
+        otherwise = [TimeMatchDescription.NOT_MATCHING]
+        return max([p.match(when) for p in self.preferences] + otherwise)
 
     def match_query(self, query):
         """Computes the sum of matching query items."""

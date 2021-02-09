@@ -7,6 +7,7 @@ from meety.meetings.preferences import (
     FALSE_INTERVAL,
     TRUE_INTERVAL,
     DisjunctiveIntervals,
+    TimeMatchDescription,
     reset_options,
 )
 
@@ -34,10 +35,11 @@ def test_date_interval_parse(text, tests):
     reset_options()
     interval = DisjunctiveIntervals.parse_date(text)
     for test in tests:
-        date = test["date"]
+        date = testdata.str_to_date(test["date"])
         expected_match = test["expected"]
-        result = interval.is_satisfied(testdata.str_to_date(date))
-        assert str(result) == expected_match
+        default = TimeMatchDescription.DATE_MATCHING
+        result = interval.is_satisfied(date, default)
+        assert str(testdata.md2bool(result)) == expected_match
 
 
 @pytest.mark.parametrize("text, tests", [
@@ -48,10 +50,11 @@ def test_time_interval_parse(text, tests):
     reset_options()
     interval = DisjunctiveIntervals.parse_time(text)
     for test in tests:
-        datetime = test["datetime"]
+        datetime = testdata.str_to_datetime(test["datetime"])
         expected_match = test["expected"]
-        result = interval.is_satisfied(testdata.str_to_datetime(datetime))
-        assert str(result) == expected_match
+        default = TimeMatchDescription.TIME_MATCHING
+        result = interval.is_satisfied(datetime, default)
+        assert str(testdata.md2bool(result)) == expected_match
 
 
 @pytest.mark.parametrize("text, tests", [
@@ -63,7 +66,8 @@ def test_weekday_interval_parse(text, tests):
     testdata.apply_language_configurations("lang_en")
     interval = DisjunctiveIntervals.parse_weekday(text)
     for test in tests:
-        datetime = test["date"]
+        datetime = testdata.str_to_date(test["date"])
         expected_match = test["expected"]
-        result = interval.is_satisfied(testdata.str_to_date(datetime))
-        assert str(result) == expected_match
+        default = TimeMatchDescription.WEEKDAY_MATCHING
+        result = interval.is_satisfied(datetime, default)
+        assert str(testdata.md2bool(result)) == expected_match

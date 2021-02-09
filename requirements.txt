@@ -4,3 +4,4 @@ pyperclip
 termcolor
 colorama
 pyqt5
+pyshortcuts >= 1.8.0

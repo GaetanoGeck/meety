@@ -1,6 +1,9 @@
 import pyperclip
 
-from meety.io import datetime
+from meety.io import (
+    datetime,
+    html,
+)
 from meety.io.actions import registry
 from meety.io.utils import *
 

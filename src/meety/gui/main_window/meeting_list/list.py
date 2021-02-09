@@ -1,24 +1,33 @@
+import time
+
 from PyQt5.QtCore import (
     QEvent,
+    QMimeData,
     Qt,
     pyqtSignal,
 )
+from PyQt5.QtGui import (
+    QDrag,
+    QKeySequence,
+)
 from PyQt5.QtWidgets import (
+    QApplication,
     QGridLayout,
     QLabel,
     QListWidget,
     QWidget,
 )
 
+from meety.gui.info_dialog.files import TabFiles
 from meety.gui.main_window.meeting_list.context import MeetingItemMenu
 from meety.gui.main_window.meeting_list.delegate import ItemDelegate
 from meety.gui.main_window.meeting_list.item import MeetingItem
 from meety.gui.main_window.options import OptionsWidget
 
 
-class MeetingList(QWidget):
+class Meetings(QWidget):
     meeting_chosen = pyqtSignal(object, name="meeting_chosen")
-    handler_chosen = pyqtSignal(object, name="handler_chhosen")
+    handler_chosen = pyqtSignal(object, name="handler_chosen")
     reload_requested = pyqtSignal(name="reload_requested")
     rating_mode_toggled = pyqtSignal(bool, name="rating_mode_toggled")
 
@@ -38,6 +47,7 @@ class MeetingList(QWidget):
         layout.addWidget(self._create_info(), 0, 0)
         layout.addWidget(self._create_options(), 0, 1)
         layout.addWidget(self._create_list(), 1, 0, 1, 2)
+        layout.addWidget(self._create_file_status(), 2, 0, 1, 2)
         self.setLayout(layout)
 
     def _create_layout(self):
@@ -61,10 +71,12 @@ class MeetingList(QWidget):
         return self._options
 
     def _create_list(self):
-        self._list = QListWidget()
-        item_delegate = ItemDelegate()
-        self._list.setItemDelegate(item_delegate)
+        self._list = MeetingList()
         return self._list
+
+    def _create_file_status(self):
+        self._file_status = TabFiles()
+        return self._file_status
 
     def _connect_widget_signals(self):
         self._list.itemActivated.connect(self._choose_meeting)
@@ -72,6 +84,10 @@ class MeetingList(QWidget):
             self.rating_mode_toggled.emit
         )
         self._list.installEventFilter(self)
+        delegate = self._list.get_item_delegate()
+        delegate.context_menu_requested.connect(
+            self._context_menu_from_delegate
+        )
 
     def set_name(self, name):
         self.name = name
@@ -94,6 +110,8 @@ class MeetingList(QWidget):
             item = MeetingItem(rmeeting)
             self._list.addItem(item)
         self._list.setCurrentRow(min(row, last))
+        if rated_meetings:
+            self._file_status.hide()
 
     def _choose_meeting(self, item):
         rmeeting = item.data(Qt.UserRole)
@@ -103,6 +121,9 @@ class MeetingList(QWidget):
         if event.type() == QEvent.ContextMenu and source is self._list:
             return self._context_menu_on_list(source, event)
         return super().eventFilter(source, event)
+
+    def _context_menu_from_delegate(self, event):
+        return self._context_menu_on_list(self._list, event)
 
     def _context_menu_on_list(self, source, event):
         item = source.itemAt(event.pos())
@@ -114,3 +135,84 @@ class MeetingList(QWidget):
         menu.reload_requested.connect(self.reload_requested.emit)
         menu.exec_(event.globalPos())
         return True
+
+
+class MeetingList(QListWidget):
+    COPY_COMPLETE_TIMESPAN = 2000
+
+    def __init__(self):
+        super().__init__()
+        self.setProperty("class", "meetings")
+        self._set_delegate()
+        self._set_drag_and_drop()
+        self._copy_tracker = EventTimingTracker(self.COPY_COMPLETE_TIMESPAN)
+
+    def get_item_delegate(self):
+        return self._item_delegate
+
+    def _set_delegate(self):
+        self._item_delegate = ItemDelegate()
+        super().setItemDelegate(self._item_delegate)
+        self._item_delegate.setParent(self)
+
+    def _set_drag_and_drop(self):
+        super().setDragEnabled(True)
+
+    def keyPressEvent(self, event):
+        if event.matches(QKeySequence.Copy):
+            close_to_last_copy = self._copy_tracker.new_event()
+            self._copy_to_clipboard(complete=close_to_last_copy)
+
+    def _copy_to_clipboard(self, complete):
+        mime_data = self._get_mime_data(complete)
+        QApplication.clipboard().setMimeData(mime_data)
+
+    def mouseMoveEvent(self, event):
+        drag = QDrag(self)
+        complete = event.modifiers() & Qt.ShiftModifier
+        drag.setMimeData(self._get_mime_data(complete))
+        drag.exec_(Qt.MoveAction)
+
+    def _get_mime_data(self, complete):
+        mime_data = QMimeData()
+        if complete:
+            self._set_mime_data_complete(mime_data)
+        else:
+            self._set_mime_data_minimal(mime_data)
+        return mime_data
+
+    def _set_mime_data_complete(self, mime_data):
+        meeting = self.current_meeting
+        mime_data.setText(meeting.input_data_to_str())
+
+    def _set_mime_data_minimal(self, mime_data):
+        meeting = self.current_meeting
+        urls = meeting.urls
+        if len(urls) == 0:
+            url_text = "<NO URLs>"
+        elif len(urls) == 1:
+            url_text = urls[0]
+        else:
+            url_text = "\n" + "\n".join([f"- {u}" for u in urls])
+        mime_data.setText(f"{meeting.name}: {url_text}")
+
+    @property
+    def current_meeting(self):
+        return self.currentItem().data(Qt.UserRole).meeting
+
+
+class EventTimingTracker:
+    """Register new events and check whether the last event happened
+    within the given time span."""
+
+    def __init__(self, time_span):
+        self._last = 0
+        self._time_span = time_span
+
+    """Returns True if and only if the new event is close to the last."""
+
+    def new_event(self):
+        current = time.time() * 1000
+        close = current - self._last < self._time_span
+        self._last = current
+        return close

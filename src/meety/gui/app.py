@@ -50,6 +50,14 @@ def get_all_meetings():
     return _all_meetings
 
 
+def get_loaded_paths():
+    return _loader.loaded_paths
+
+
+def get_active_directories():
+    return _loader.active_directories
+
+
 def _create_app():
     app = QApplication([])
     icon = get_icon(PROGRAM)
@@ -68,6 +76,7 @@ def _create_window():
         ypos=_args.window_ypos
     )
     _connect_signals()
+    _warn_on_loading_failures()
 
 
 def _update_meetings():
@@ -88,8 +97,25 @@ def _connect_signals():
     timer.start(1000)
 
 
+def _warn_on_loading_failures():
+    failures = _loader.loaded_paths.all_failures
+    if failures:
+        text = (
+            f"Failed to load {len(failures)} file(s): "
+            + ",".join(failures),
+        )
+        tooltip = "\n".join(f"- {f}" for f in failures)
+        window.warn(text, tooltip)
+
+
+def add_meeting_file(filename):
+    _loader.add_file(filename)
+    _on_reload_requested()
+
+
 def _on_reload_requested():
     _loader.reload()
+    window.notify("Reloaded meetings.")
     global _all_meetings
     _all_meetings = _loader.meetings
     _update_meetings()

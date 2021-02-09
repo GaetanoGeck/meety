@@ -83,7 +83,7 @@ class Config:
     def _init_user_config_alternative(self, path):
         abspath = os.path.abspath(path)
         log.info(f"Using alternative user configuration file '{abspath}'.")
-        self._user = PartialConfig("user", abspath)
+        self._user = PartialConfig("user", abspath, open_user_config)
 
     def reload(self):
         """(Re-)Load the configuration from the predefined files."""

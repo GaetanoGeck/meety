@@ -92,3 +92,32 @@
   type: only-best
   rated:
     - Linear Algebra 1
+
+- file: time_matches.yaml
+  query: []
+  type: all-matching
+  when: 2021-02-07 16:50
+  pfactor: 1
+  rated:
+    - by hour
+    - by date
+    - by weekday
+
+- file: time_matches.yaml
+  query: []
+  type: all-matching
+  when: 2021-02-07 20:50
+  pfactor: 1
+  rated:
+    - by date
+    - by weekday
+
+- file: time_matches.yaml
+  query: []
+  type: all-matching
+  when: 2021-02-07 22:30
+  pfactor: 1
+  rated:
+    - by hour
+    - by date
+    - by weekday

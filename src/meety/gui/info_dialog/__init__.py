@@ -5,8 +5,10 @@ from PyQt5.QtWidgets import (
 )
 
 from meety.gui.info_dialog.about import TabAbout
+from meety.gui.info_dialog.files import TabFiles
 from meety.gui.info_dialog.log import TabLog
 from meety.gui.info_dialog.meetings import TabMeetings
+from meety.gui.info_dialog.system import TabSystem
 
 
 class InfoDialog(QDialog):
@@ -25,8 +27,10 @@ class InfoDialog(QDialog):
         tabs = QTabWidget()
         tabs.setContentsMargins(0, 0, 0, 0)
         tabs.addTab(TabAbout(), "&About")
-        tabs.addTab(TabLog(), "&Log")
+        tabs.addTab(TabSystem(), "&System")
+        tabs.addTab(TabFiles(), "&Files")
         tabs.addTab(TabMeetings(), "&Meetings")
+        tabs.addTab(TabLog(), "&Log")
         layout.addWidget(tabs)
         self.setLayout(layout)
 

@@ -4,6 +4,7 @@ import os
 import yaml
 
 from meety.config import Config
+from meety.meetings.preferences import TimeMatchDescription
 
 
 def testpath(path):
@@ -25,12 +26,23 @@ def apply_language_configurations(*langs):
 
 
 def str_to_date(text):
+    if text is None:
+        return None
     return datetime.datetime.strptime(text, "%Y-%m-%d")
 
 
 def str_to_time(text):
+    if text is None:
+        return None
     return datetime.datetime.strptime(text, "%H:%M").time()
 
 
 def str_to_datetime(text):
+    if text is None:
+        return None
     return datetime.datetime.strptime(text, "%Y-%m-%d %H:%M")
+
+
+def md2bool(match_description):
+    """Convert matching to `True`, others to `False`."""
+    return match_description != TimeMatchDescription.NOT_MATCHING

@@ -1,5 +1,7 @@
 import datetime
 
+from meety.meetings.preferences import TimeMatchDescription
+
 
 class RatedMeeting:
     """A meeting with its time preference and query ratings."""
@@ -10,7 +12,7 @@ class RatedMeeting:
     def __init__(self, meeting):
         """Save meeting with preference and query rating."""
         self._meeting = meeting
-        self._prating = False
+        self._prating = TimeMatchDescription.NOT_MATCHING
         self._qrating = False
 
     @property
@@ -27,7 +29,7 @@ class RatedMeeting:
     def rating(self):
         """Compute total rating value."""
         return sum([
-            RatedMeeting.PREFER_FACTOR * self._prating,
+            RatedMeeting.PREFER_FACTOR * self._prating.value,
             RatedMeeting.QUERY_FACTOR * self._qrating,
         ])
 
@@ -35,7 +37,7 @@ class RatedMeeting:
         return self._qrating
 
     def matches_preference(self):
-        return self._prating
+        return TimeMatchDescription.matches(self._prating)
 
     def matches(self):
         return self.rating > 0
@@ -47,6 +49,14 @@ class RatedMeeting:
         if self.matches_preference():
             return "matching_preference"
         return "others"
+
+    @property
+    def match_preference_details(self):
+        return {
+            TimeMatchDescription.TIME_MATCHING: "now",
+            TimeMatchDescription.DATE_MATCHING: "today",
+            TimeMatchDescription.WEEKDAY_MATCHING: "today",
+        }.get(self._prating, "")
 
     def __str__(self):
         return str(self._meeting)

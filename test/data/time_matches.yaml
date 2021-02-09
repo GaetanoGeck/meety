@@ -1,0 +1,13 @@
+- name: no match
+
+- name: by weekday
+  prefer:
+    weekday: 7
+
+- name: by date
+  prefer:
+    date: 2021-02-07
+
+- name: by hour
+  prefer:
+    time: 16:00 - 17:00, 22:00 - 23:00

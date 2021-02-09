@@ -12,6 +12,7 @@ from meety.gui.info_dialog import InfoDialog
 class StatusWidget(QWidget):
     NOTIFY_QUICK_TIME_SPAN = 3000
     NOTIFY_NORMAL_TIME_SPAN = 8000
+    WARNING_TIME_SPAN = 10000
 
     def __init__(self):
         super().__init__()
@@ -64,6 +65,10 @@ class StatusWidget(QWidget):
     def notify(self, text, tooltip=""):
         span = self.NOTIFY_NORMAL_TIME_SPAN
         self._enqueue_notification(text, tooltip, span)
+
+    def warn(self, text, tooltip=""):
+        span = self.WARNING_TIME_SPAN
+        self._enqueue_notification(f"Warning: {text}", tooltip, span)
 
     def _enqueue_notification(self, text, tooltip, time_span):
         self._message_queue.append((text, tooltip, time_span))

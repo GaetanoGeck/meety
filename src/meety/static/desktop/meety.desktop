@@ -2,7 +2,7 @@
 Name=Meety
 Comment=Quickly start online meetings from YAML
 Exec=meety
-Icon=meety.png
+Icon=meety-256.png
 Type=Application
 Terminal=false
 Categories=Utility;

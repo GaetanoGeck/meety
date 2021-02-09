@@ -7,6 +7,7 @@ from meety.meetings.preferences import (
     DateInterval,
     DisjunctiveIntervals,
     TimeInterval,
+    TimeMatchDescription,
     reset_options,
 )
 
@@ -29,7 +30,9 @@ def test_date_delta(spec, config, tests):
         if test_time:
             test_time = testdata.str_to_time(test_time)
             test_date = datetime.combine(test_date, test_time)
-        assert str(interval.is_satisfied(test_date)) == expected
+        default = TimeMatchDescription.DATE_MATCHING
+        mdesc = interval.is_satisfied(test_date, default)
+        assert str(testdata.md2bool(mdesc)) == expected
 
 
 @pytest.mark.parametrize("spec, config, tests", [
@@ -49,4 +52,6 @@ def test_time_delta(spec, config, tests):
         expected = test["expected"]
         test_time = testdata.str_to_time(test_time)
         test_date = datetime.combine(datetime.today(), test_time)
-        assert str(interval.is_satisfied(test_date)) == expected
+        default = TimeMatchDescription.DATE_MATCHING
+        mdesc = interval.is_satisfied(test_date, default)
+        assert str(testdata.md2bool(mdesc)) == expected

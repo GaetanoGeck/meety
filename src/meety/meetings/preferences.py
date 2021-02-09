@@ -1,6 +1,7 @@
 """ Time preferences that can comprise weekday, date and time specifications.
 Each specification can be a scalar, a range or a list of ranges.
 """
+import enum
 from abc import (
     ABC,
     abstractmethod,
@@ -10,6 +11,7 @@ from datetime import (
     time,
     timedelta,
 )
+from functools import total_ordering
 
 from meety import io
 from meety.logging import log
@@ -35,6 +37,27 @@ def to_datetime(d, t):
         return datetime.combine(d, t)
     except TypeError:
         return None
+
+
+@total_ordering
+class TimeMatchDescription(enum.Enum):
+    NOT_MATCHING = 0
+    NOT_DEFINED = 1
+    MATCHING = 2
+    WEEKDAY_MATCHING = 3
+    DATE_MATCHING = 4
+    TIME_MATCHING = 5
+
+    def __lt__(self, other):
+        if self.__class__ is other.__class__:
+            return self.value < other.value
+        return NotImplemented
+
+    def matches(description):
+        return description not in [
+            TimeMatchDescription.NOT_MATCHING,
+            TimeMatchDescription.NOT_DEFINED,
+        ]
 
 
 class TimePreference:
@@ -77,13 +100,18 @@ class TimePreference:
     def match(self, when):
         """Tests whether all conditions (weekday, time, date) are met."""
         subconditions = [
-            p.is_satisfied(when)
-            for name, p in self._named_preferences
+            p.is_satisfied(when, description)
+            for name, p, description in self._named_and_weighted_preferences
         ]
-        return subconditions and all(subconditions)
+        if TimeMatchDescription.NOT_MATCHING in subconditions:
+            # not all conditions are matched
+            return TimeMatchDescription.NOT_MATCHING
+        else:
+            # consider the strongest condition
+            return max(subconditions)
 
     def __str__(self):
-        prefs = [p for p in self._named_preferences if str(p[1])]
+        prefs = [p for p in self._named_and_weighted_preferences if str(p[1])]
         if len(prefs) == 0:
             return "no preference"
 
@@ -93,21 +121,33 @@ class TimePreference:
         if len(prefs) == 1:
             return describe(prefs[0])
         else:
-            return "\n".join([describe(n, p) for (n, p) in prefs])
+            return "\n".join([describe(n, p) for (n, p, w) in prefs])
 
     @property
     def is_nontrivial(self):
-        p = list(self._named_preferences)
+        p = list(self._named_and_weighted_preferences)
         return len(p) > 0
 
     @property
-    def _named_preferences(self):
+    def _named_and_weighted_preferences(self):
         if self._weekday:
-            yield ("weekday", self._weekday)
+            yield (
+                "weekday",
+                self._weekday,
+                TimeMatchDescription.WEEKDAY_MATCHING
+            )
         if self._date:
-            yield ("date", self._date)
+            yield (
+                "date",
+                self._date,
+                TimeMatchDescription.DATE_MATCHING
+            )
         if self._time:
-            yield ("time", self._time)
+            yield (
+                "time",
+                self._time,
+                TimeMatchDescription.TIME_MATCHING
+            )
 
 
 class DisjunctiveIntervals:
@@ -149,13 +189,16 @@ class DisjunctiveIntervals:
     def is_valid(self):
         return self._intervals
 
-    def is_satisfied(self, when):
+    def is_satisfied(self, when, desc=TimeMatchDescription.NOT_MATCHING):
         """Tests whether the given `when` satisfies at least one
         interval or whether there is none.
         """
         if self._intervals is None:
-            return False
-        return not self._intervals or any(self.match_all(when))
+            return TimeMatchDescription.NOT_MATCHING
+        if not self._intervals:
+            return TimeMatchDescription.NOT_DEFINED
+        return desc if any(self.match_all(when)) \
+            else TimeMatchDescription.NOT_MATCHING
 
     def match_all(self, when):
         """Apply matching test for `when` to each interval."""

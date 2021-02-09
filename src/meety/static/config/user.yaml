@@ -83,16 +83,26 @@ gui:
   # The only supported attribute so far is "bold".
   styles:
     #matching_query:
+      #size: 18
       #color: "#ea195d"
       #background: "#eee"
       #attrs: ["bold"]
       #selected: "#ddd"
     #matching_preference:
+      #size: 18
       #color: "#444"
       #background: "#eee"
       #attrs: ["bold"]
       #selected: "#ddd"
     #others:
+      #size: 18
+      #color: "#888"
+      #background: "#eee"
+      #attrs: ["bold"]
+      #selected: "#ddd"
+    #info:
+      #show: yes
+      #size: 14
       #color: "#888"
       #background: "#eee"
       #attrs: ["bold"]

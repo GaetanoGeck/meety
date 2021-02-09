@@ -29,6 +29,7 @@ class TabAbout(QLabel):
         self.setText(ABOUT)
         self.setMargin(10)
         self.setAlignment(QtCore.Qt.AlignTop)
+        self.setOpenExternalLinks(True)
 
     def _connect_widget_signals(self):
         pass

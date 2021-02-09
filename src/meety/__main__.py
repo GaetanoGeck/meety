@@ -1,4 +1,4 @@
-"""Meety - quickly connect to online meetings managed in YAML."""
+"""Meety - quickly start online meetings from YAML."""
 
 import argparse
 import sys

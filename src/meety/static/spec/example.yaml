@@ -1,0 +1,39 @@
+# Example meetings specifications in YAML
+# Text after '#' is ignored by the application
+
+# FIRST MEETING (Coffee round with colleagues, every morning)
+- name: Coffee
+  zoom-url: https://zoom.us/j/123456789
+  prefer: Monday to Friday, 9 to 10 o'clock
+  # short format for time specifications (also for other languages)
+
+# SECOND MEETING (lecture, each Tuesday and Thursday)
+- name: My favourite lecture
+  url: https://my-university.edu/my-fav-lecture
+  prefer:
+    - weekday: Tuesday
+      time: 12:00 - 14:00
+      date: 2020-10-01 - 2021-03-31
+    - weekday: Thursday
+      time: 14:00 - 16:00
+      date: 2020-10-01 - 2021-03-31
+  # explicit format for time specifications (also for other languages)
+
+# THIRD MEETING (without time preferences)
+- name: Another meeting
+  zoom-id: 987-654-321
+
+# SOME NOTES =========================================================
+# For more detailed information on _how to specify meetings_,
+# please have a look at the documentation.
+#
+# https://github.com/GaetanoGeck/meety/blob/main/docs/specify-meetings.md
+#
+# By default, "Meety" considers every YAML file (with extension
+# '.yaml' or '.yml') in the user's home directory as well as in the
+# current working directory.
+# You can configure "Meety" not to consider all these files and/or
+# other files and directories. This, again, is described in more
+# detail in the documentation.
+#
+# https://github.com/GaetanoGeck/meety/blob/main/docs/select-files.md

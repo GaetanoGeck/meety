@@ -41,6 +41,17 @@ QCheckBox::indicator:checked:pressed {
 	background: #888;
 }
 
+QWidget.meetings {
+	background: #555;
+}
+
 QPushButton.info {
 	font: bold;
+}
+
+QPushButton.create_template {
+	border: 8px solid #ff7;
+	font: bold;
+	background: #ff7;
+	color: #222;
 }

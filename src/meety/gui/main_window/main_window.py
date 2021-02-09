@@ -11,7 +11,7 @@ from PyQt5.QtWidgets import (
 )
 
 from meety.gui import static as gui_static
-from meety.gui.main_window.meeting_list import MeetingList
+from meety.gui.main_window.meeting_list import Meetings
 from meety.gui.main_window.search import SearchWidget
 from meety.gui.main_window.status import StatusWidget
 from meety.io.utils import ensure_between
@@ -54,7 +54,7 @@ class MainWindow(QWidget):
         return self._search
 
     def _create_meetings(self):
-        self._meetings = MeetingList()
+        self._meetings = Meetings()
         return self._meetings
 
     def _create_status(self):
@@ -81,7 +81,9 @@ class MainWindow(QWidget):
 
     def notify(self, text, tooltip=""):
         self._status.notify(text, tooltip)
-        self._status.setToolTip(tooltip)
+
+    def warn(self, text, tooltip=""):
+        self._status.warn(text, tooltip)
 
     def clear_notifications(self):
         self._status.clear_notifications()

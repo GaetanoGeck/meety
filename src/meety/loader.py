@@ -1,5 +1,9 @@
 import glob
 import os
+from collections import (
+    OrderedDict,
+    namedtuple,
+)
 
 import yaml
 
@@ -45,14 +49,12 @@ class Loader:
             + files_in_by_extension(directory, "yml")
         )
 
-    @classmethod
-    def _load_meeting_entries_from_file(cls, filename):
+    def _load_meeting_entries_from_file(self, filename):
         """Try to load meetings from YAML file, return """
-        data = cls._load_data_from_file(filename)
-        return cls._create_meetings_from_data(data)
+        data = self._load_data_from_file(filename)
+        return self._create_meetings_from_data(data)
 
-    @classmethod
-    def _load_data_from_file(cls, filename):
+    def _load_data_from_file(self, filename):
         """Try to load data from YAML file, return empty dictionary on
         failure.
         """
@@ -60,18 +62,22 @@ class Loader:
             with open(filename) as file:
                 return yaml.load(file, Loader=yaml.BaseLoader)
         except FileNotFoundError as e:
+            self._loaded_paths.fail_on(filename, "does not exist")
             log.warning(f"Meeting file '{filename}' does not exist.")
             log.exception(e, warn=False)
-            return {}
+            return None
         except Exception as e:
+            self._loaded_paths.fail_on(filename, "failed to parse")
             log.warning(f"Failed to load meetings from '{filename}'")
             log.exception(e)
-            return {}
+            return None
 
     @classmethod
     def _create_meetings_from_data(cls, data):
         """Create meeting from a single entry or meetings from a list
         of entries."""
+        if data is None:
+            return None
         meetings = []
         if not isinstance(data, list):
             data = [data]
@@ -138,10 +144,13 @@ class Loader:
         for f in files:
             self._consider_to_load_from_file(f)
 
+    def add_file(self, filename):
+        self._consider_to_load_from_file(filename)
+
     def reload(self):
         """Reload data from already loaded files."""
         self._meetings = []
-        for path in self._loaded_paths.all_paths():
+        for path in self._loaded_paths.all_paths:
             self.load_from_file(path)
 
     def _log_files_to_consider(self, files):
@@ -157,43 +166,68 @@ class Loader:
             log.info(f"Skipping file '{filename}', already read.")
         else:
             self.load_from_file(filename)
-            self._loaded_paths.add(filename)
 
     def load_from_file(self, filename):
         """Unconditionally load meetings from file and save them."""
-        meetings = self._load_meeting_entries_from_file(filename)
-        new_meetings = [m for m in meetings if m not in self._meetings]
-        self._log_loading_stats(filename, meetings, new_meetings)
-        self._meetings.extend(new_meetings)
+        all_meetings = self._load_meeting_entries_from_file(filename)
+        if all_meetings is not None:
+            new_meetings = [
+                m for m in all_meetings
+                if m not in self._meetings
+            ]
+            self._log_loading_stats(
+                filename,
+                len(new_meetings),
+                len(all_meetings),
+            )
+            self._meetings.extend(new_meetings)
 
-    def _log_loading_stats(self, filename, meetings, new_meetings):
-        num_read = len(meetings)
-        num_new = len(new_meetings)
+    def _log_loading_stats(self, filename, num_new, num_all):
         details = [
             f"Adding only {num_new} new.",
             "Adding all.",
-        ][num_read == num_new]
+        ][num_new == num_all]
         log.info(
-            f"Loaded {num_read} meetings from '{filename}'. "
+            f"Loaded {num_all} meetings from '{filename}'. "
             + details
         )
+        self._loaded_paths.succeed_on(filename, num_new, num_all)
+
+
+LoadStatus = namedtuple("LoadStatus", "new all")
 
 
 class LoadedPaths:
     """Remember absolute paths of files that have already been loaded."""
     def __init__(self):
-        self._abspaths = set()
+        self._status = OrderedDict()
 
     def contains(self, path):
         abspath = os.path.abspath(path)
-        if abspath in self._abspaths:
-            return True
-        else:
-            return False
+        return abspath in self._status
 
-    def add(self, path):
-        abspath = os.path.abspath(path)
-        self._abspaths.add(abspath)
-
+    @property
     def all_paths(self):
-        return list(self._abspaths)
+        return list(self._status.keys())
+
+    @property
+    def all_failures(self):
+        return {
+            k: v for (k, v) in self._status.items()
+            if isinstance(v, str)
+        }
+
+    def status(self, path):
+        info = self._status.get(path) or "unknown"
+        if isinstance(info, LoadStatus):
+            return f"added {info.new} of {info.all}"
+        else:
+            return info
+
+    def succeed_on(self, path, new_entries, all_entries):
+        abspath = os.path.abspath(path)
+        self._status[abspath] = LoadStatus(new_entries, all_entries)
+
+    def fail_on(self, path, msg=None):
+        abspath = os.path.abspath(path)
+        self._status[abspath] = msg

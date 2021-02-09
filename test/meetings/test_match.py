@@ -56,4 +56,5 @@ def _test_match(prefer, tests):
             pref = TimePreference.from_dict(prefer)
         elif isinstance(prefer, str):
             pref = TimePreference.from_str(prefer)
-        assert str(pref.match(date)) == expected
+        mdesc = pref.match(date)
+        assert str(testdata.md2bool(mdesc)) == expected

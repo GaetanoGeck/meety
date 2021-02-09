@@ -11,6 +11,7 @@ a = Analysis(
     ],
     datas=[
         ("src/meety/static/config/*.yaml", "meety/static/config"),
+        ("src/meety/static/spec/*.yaml", "meety/static/spec"),
         ("src/meety/gui/static/*.css", "meety/gui/static"),
     ],
     hiddenimports=['colorama'],
