@@ -1,3 +1,11 @@
+import os
+
+DEFAULT_MEETING_SPEC = os.path.join(
+    os.path.expanduser("~"),
+    "meetings.yaml"
+)
+
+
 def _add_argparser_common_arguments(parser, summary):
     parser.add_argument(
         "-f", "--file",
@@ -25,6 +33,15 @@ def _add_argparser_common_arguments(parser, summary):
         help="copy password to clipboard on connection",
         action="store_true",
         default=False,
+    )
+    parser.add_argument(
+        "--init",
+        dest="init",
+        metavar="PATH",
+        help="create template meeting specification",
+        nargs="?",
+        const=DEFAULT_MEETING_SPEC,
+        type=str,
     )
     parser.add_argument(
         "--verbose",

@@ -1,9 +1,12 @@
 """Meety - quickly start online meetings from YAML."""
 
 import argparse
+import os
+import shutil
 import sys
 
 from meety import args as common_args
+from meety import resources
 from meety.config import Config
 from meety.loader import Loader
 from meety.logging import log
@@ -12,6 +15,16 @@ PROGRAM = "meety"
 VERSION = "0.9.2"
 SUMMARY = f"This is {PROGRAM}, version {VERSION}."
 URL = "https://github.com/GaetanoGeck/meety/"
+
+DOCUMENTATION_TEMPLATE = """Please edit this file. It contains some comments \
+but you can find more information on the web:
+
+  - How to define which meeting specifications are loaded
+    https://github.com/GaetanoGeck/meety/blob/main/docs/select-files.md
+
+  - How to specify meetings in YAML
+    https://github.com/GaetanoGeck/meety/blob/main/docs/specify-meetings.md
+"""
 
 
 def start_cli():
@@ -33,6 +46,10 @@ def start_app(app):
     args = _prepare_args(app, config)
     _prepare_logger(args)
     log.info(f"command line arguments: {_input_args}")
+
+    if args.init:
+        _create_template_meeting_specification(args.init)
+        return
 
     config.apply()
     loader = _load(args)
@@ -87,6 +104,21 @@ def _load(args):
     loader.add_explicit_files(args.files)
     loader.load()
     return loader
+
+
+def _create_template_meeting_specification(target):
+    source = resources.get_spec_path("example.yaml")
+    target = os.path.expanduser(target)
+    if os.path.isfile(target):
+        log.error(
+            f"File '{target}' already exists. "
+            "Please remove it first -- if appropriate."
+        )
+        return
+    print(f"Copying meeting specification template to {target}.", end=" ")
+    shutil.copy(source, target)
+    print("Done.")
+    print(DOCUMENTATION_TEMPLATE)
 
 
 if __name__ == "__main__":

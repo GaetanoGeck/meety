@@ -42,7 +42,7 @@ class Config:
         """
         if not os.path.isfile(target):
             log.info(
-                "Copying user configuration template to {target}."
+                f"Copying user configuration template to {target}."
             )
             shutil.copy(source, target)
 
