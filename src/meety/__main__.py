@@ -54,6 +54,7 @@ def _setup_argparser(app):
     argparser = argparse.ArgumentParser(
         prog=sys.argv[0],
         description=__doc__,
+        epilog=f"Detailed documentation on {URL}",
     )
     app.add_argparser_arguments(argparser)
     common_args._add_argparser_common_arguments(
