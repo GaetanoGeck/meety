@@ -17,3 +17,4 @@ Early on we wanted to open source _Meety_ but due to a number of other tasks, we
 **Thanks also to**
 
 - Jonas Schmidt for helpful comments
+- Andre Thevapalan for noting problems with outdated packages

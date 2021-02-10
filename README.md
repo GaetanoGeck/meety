@@ -12,7 +12,6 @@ _Meety_ aims to provide a quick and easy way to start the right online meeting f
 - sensibly share them with other users, even if they don't use _Meety_.
   (Think of conferences, lectures, ...)
   
-
 **Features.**
 _Meety_ can can load meetings from one or multiple YAML files. The meetings can be filtered by time preferences and/or keywords. After choosing a meeting, _Meety_ will try to connect to it based on the information the meeting provides. 
 
@@ -28,13 +27,15 @@ _Meety_ ships with a graphical user interface (program `meety`, first screenshot
 
 Just follow the three steps below.
 
-
 ### Step 1/3: Install _Meety_
 
-- **If you have Python and PIP installed,** simply run one of the following commands in your shell:
+- **Preferred: If you have Python and PIP installed,** 
+  simply run one of the following commands in your shell:
 	- user only: `pip3 install --user meety`
 	- system-wide: `sudo pip3 install meety`
   You may have to take care that the path to the installation directory known to your system.
+  
+  If the application doesn't run as expected, please consider updating the required packages via the _requirements.txt_ file in this repository: `pip install --upgrade -r requirements.txt`
 - **Alternatively download one of the bundles:**
     - Linux
 		- [Debian package](https://github.com/GaetanoGeck/meety/releases/download/v0.9.2/python3-meety_0.9.2-1_all.deb) (Ubuntu, ...):
@@ -47,20 +48,37 @@ Just follow the three steps below.
             - the graphical user interface (`meety.exe`) and
             - the required libraries.
         3. Extract the archive into a suitable place (e.g. to `C:\Program Files\meety`).
-           Maybe create a shortcut to `meety.exe`.
+           Maybe create a shortcut to `meety.exe` (right click on the program and then select "Send to Desktop").
+
+**Shortcuts.** For convenient use of the graphical user interface, you might want to create shortcuts on your desktop and/or menu.
+- run `meety`
+- click on "info" in the bottom right corner
+- switch tab "System" and click on "create"
+
+_Note:_ For technical reasons, this is currently not guaranteed to work in all environments. In particular, it does not work for the Windows bundle. Sorry!
 
 ### Step 2/3: Add a meetings file
 
-Add a YAML file with meeting specifications to your home directory. You may find it helpful to start with a [template](./docs/quick-start.yaml) whose contents are also shown below.
+Add a YAML file with meeting specifications to your home directory. You may find it helpful to **start with a template:** you may, for instance,
+- **GUI:** run `meety` and, if no meetings are found, click on the button "Create specification from template"
+  (this button can also be found in the "info" dialog, on tab "Files")
+- **CLI:**
+    - copy the contents of [template](./docs/quick-start.yaml), also shown below,
+    - or run `cmeety --init` from the command-line, to create a file named `meetings.yaml` in your home directory.
 
-**Notes:**
+<details>
+<summary>Notes on filenames and directories</summary>
+
 - With the default options, the filename is of no importance as long it has extension `.yaml` or `.yml`.
-- The home directory is usually
+- The home directory is system-specific
 	- `/home/<username>/` on Linux,
 	- `/Users/<username>/` on MacOS and
 	- `C:\Users\<username>\` on Windows.
 - _Meety_ can also load files from other directories than your home directory (and can also ignore those in your home directory). For instance, you can load meetings from file `~/meetings/conferenceA.yaml` only by invoking _Meety_ with arguments `-e -f ~/meetings/conferenceA.yaml`. This is described in more detail in the [documentation](./docs/select-files.md).
 
+</details>
+
+**Example template**
 ```text
 # Example meeting specifications in YAML
 # Text after '#' is ignored by the application
@@ -88,6 +106,9 @@ Add a YAML file with meeting specifications to your home directory. You may find
   zoom-id: 987-654-321
 ```
 
+<details>
+<summary>Some specification details</summary>
+
 **Syntax overview for meeting specifications.**
 Each meeting forms a list entry that is introduced with a dash, `-`. Such an entry is expected to be a dictionary, which can comprise several attributes of the form `key: value`. _Meety_ ignores the case of characters in the key. Values in turn can be text, a list or a dictionary again. To be recognised as a meeting specification, each entry is required to have an attribute with key `name`. This attribute has to be provided explicitly or can be derived automatically from other attributes. Other attributes are optional but may affect querying if they have a text value. More importantly, attributes with some keys, like `url`, `zoom-url` and `prefer` have a special meaning for _Meety_.
 
@@ -98,13 +119,14 @@ This is described in more detail in the [documentation](./docs/configuration.md#
 
 **Support for other languages.**
 Inferred attributes can also be used to make other words understood by _Meety_, in particular words from other languages. _Meety_ currently ships with some English, French, German, Italian and Spanish definitions (which can be enabled or disabled via the configuration), see the [documentation](./docs/configuration.md#languages) for more information.
+</details>
 
 ### Step 3/3: Run _Meety_
 
 The goal of _Meety_ is to help you to connect to the meeting you're looking for quickly and effortlessly.
 First, you have to identify a meeting of course. Then, you can try to connect to it.
 
-**Rating of meetings.**
+**General notes.**
 _Meety_ rates all meetings and shows meetings sorted by their rating (the best matching first). Meetings with equal ratings are shown in the order they have been loaded. Depending on your options, _Meety_ shows all or only matching meetings.
 
 Meetings can be matching with respect to
@@ -113,71 +135,11 @@ Meetings can be matching with respect to
 
 Matching keywords contribute more to the rating than matching time preferences by default.
 
-#### Graphical user interface
+**Application usage.**
+Although the idea of meeting ratings and display is the same, usage natuarlly varies with the user interface. Each interface is described on its own:
+- [Graphical user interface](./docs/gui.md) (program `meety`)
+- [Command-line interface](./docs/cli.md) (program `cmeety`)
 
-After starting _Meety_, the graphical user interface shows meetings according to their rating. Matching entries are highlighted. If you change the text in the search field or as time passes, the rating is updated, which may affect the order of items. By default, _all_ meetings are shown. If you activate the checkbox _only matching_, non-matching meetings are hidden.
-
-<img alt="Screenshot of the graphical user interface with option 'only matching' enabled" src="./docs/screenshots/gui-only_matching.png" width="40%"/>
-
-You can start a meeting with the preferred connection handler by clicking or double-clicking on an item (depending on your system). On a right click on an item, a context menu opens that allows you to choose a specific connection handler, to copy the meeting data and the like.
-
-#### Command-line interface
-
-After loading the meetings specifications, the command-line interface shows all _matching_ meetings. Below, we demonstrate the main options to influence the rating process for the example meetings above.
-
-**Only time preferences.**
-```text
-# -- On a Tuesday at 11:00
-> cmeety
-No meeting found. Goodbye!
-
-# -- On a Tuesday at 12:05
-> cmeety
-There's one matching meeting: My favourite lecture
-Really connect (y/N)?
-
-# -- On a Tuesday at 12:05
-> cmeety --all                           # or '-a' for short
-There are multiple matches:
-  [1] My favourite lecture
-  [2] Coffee
-  [3] Another meeting
-Which one do you want to choose?
-```
-Note that _My favourite lecture_ is the first entry (because it has a matching time preference while others have not).
-
-**Time preferences and meetings.**
-```text
-# -- On a Tuesday at 11:00
-> cmeety meet
-There's one matching meeting: Another meeting
-Really connect (y/N)?
-
-# -- On a Tuesday at 12:05
-> cmeety meet
-There are multiple matches:
-  [1] Another meeting
-  [2] My favourite lecture
-Which one do you want to choose?
-
-# -- On a Tuesday at 12:05
-> cmeety meet --all                     # or '-a' for short
-There are multiple matches:
-  [1] Another meeting
-  [2] My favourite lecture
-  [3] Coffee
-Which one do you want to choose?
-```
-Now, _Another meeting_ is listed first because it matches the query _meet_. Meeting _My favourite lecture_ is listed second because of its matching time preference.
-
-**Filter results.**
-The list of matching meetings can be shortened in many cases with the use of one of the next two options:
-
-- show only meeting with a maximal rating (`-b` or `--best`) or, even more restricted,
-- show only the very first meeting (`-1` or `--first`) with a maximal rating.
-
-**Further options.**
-There are further options. You can get a quick overview with `cmeety --help`.
 
 ## Detailed documentation
 
