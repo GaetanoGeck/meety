@@ -1,5 +1,3 @@
-import importlib.resources as resources
-
 from PyQt5.QtCore import (
     QPoint,
     Qt,
@@ -11,6 +9,7 @@ from PyQt5.QtWidgets import (
     QWidget,
 )
 
+from meety import resources
 from meety.gui import static as gui_static
 from meety.gui.main_window.meeting_list import Meetings
 from meety.gui.main_window.search import SearchWidget

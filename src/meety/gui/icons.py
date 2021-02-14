@@ -1,9 +1,7 @@
-import importlib.resources as resources
-
 from PyQt5.QtCore import QSize
 from PyQt5.QtGui import QIcon
 
-from meety.static import icons as static_icons
+from meety import resources
 
 
 def get_icon(name, sizes=[256]):
@@ -15,5 +13,5 @@ def get_icon(name, sizes=[256]):
 
 
 def _add_file_to_icon(icon, filename, size):
-    with resources.path(static_icons, filename) as path:
-        icon.addFile(str(path), QSize(size, size))
+    path = resources.get_icon_path(filename)
+    icon.addFile(str(path), QSize(size, size))

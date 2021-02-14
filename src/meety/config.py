@@ -1,4 +1,3 @@
-import importlib.resources as resources
 import os
 import shutil
 
@@ -9,11 +8,11 @@ from meety import (
     connect,
     io,
     meetings,
+    resources,
 )
 from meety.cli import styles as cli_styles
 from meety.gui import styles as gui_styles
 from meety.logging import log
-from meety.static import config as static_config
 
 
 class Config:
@@ -56,10 +55,9 @@ class Config:
 
     def _init_default_config(self):
         self._defaults = PartialConfig(
-            "default",
-            "defaults.yaml",
-            open_static_config,
-            True
+            description="default",
+            path=resources.get_config_path("defaults.yaml"),
+            required=True
         )
 
     def _init_user_config(self):
@@ -71,19 +69,21 @@ class Config:
 
     def _init_user_config_standard(self):
         Config._ensure_user_config(
-            path_static_config("user.yaml"),
-            path_user_config("config.yaml")
+            resources.get_config_path("user.yaml"),
+            user_config_path("config.yaml")
         )
         self._user = PartialConfig(
-            "user",
-            "config.yaml",
-            open_user_config
+            description="user",
+            path=user_config_path("config.yaml")
         )
 
     def _init_user_config_alternative(self, path):
         abspath = os.path.abspath(path)
         log.info(f"Using alternative user configuration file '{abspath}'.")
-        self._user = PartialConfig("user", abspath, open_user_config)
+        self._user = PartialConfig(
+            description="user",
+            path=user_config_path(abspath)
+        )
 
     def reload(self):
         """(Re-)Load the configuration from the predefined files."""
@@ -115,7 +115,10 @@ class Config:
 
     def _load_additional_config(self, name):
         filename = f"{name}.yaml"
-        config = PartialConfig(name, filename, open_static_config)
+        config = PartialConfig(
+            description=name,
+            path=resources.get_config_path(filename)
+        )
         config.load()
         self._additional_configs.append(config)
 
@@ -148,11 +151,10 @@ class Config:
 class PartialConfig:
     """Manages the configuration provided by a single YAML file."""
 
-    def __init__(self, description, filename, stream, required=False):
+    def __init__(self, description, path, required=False):
         """Prepare configuration for loading and application."""
         self._description = description
-        self._filename = filename
-        self._stream = stream
+        self._path = path
         self._data = {}
         self._required = required
 
@@ -200,7 +202,7 @@ class PartialConfig:
         status = "FAILED"
         config = {}
         try:
-            with self._stream(self._filename) as cfile:
+            with open(self._path) as cfile:
                 config = yaml.load(cfile, Loader=yaml.BaseLoader)
                 assert isinstance(config, dict)
         except FileNotFoundError:
@@ -240,18 +242,7 @@ class PartialConfig:
         return f"{self.description}:\n{self.data}"
 
 
-def path_static_config(filename):
-    """Return the path of the static (internal) file with the given name."""
-    with resources.path(static_config, filename) as path:
-        return path
-
-
-def open_static_config(filename):
-    """Return stream to the static (internal) file with the given name."""
-    return resources.open_text(static_config, filename)
-
-
-def path_user_config(filename):
+def user_config_path(filename):
     """Return the path of the user file with the given name."""
     dir_path = appdirs.user_config_dir(Config.PROGRAM)
     os.makedirs(dir_path, exist_ok=True)
@@ -260,5 +251,5 @@ def path_user_config(filename):
 
 def open_user_config(filename):
     """Return stream to the user file with the given name."""
-    path = path_user_config(filename)
+    path = user_config_path(filename)
     return open(path)

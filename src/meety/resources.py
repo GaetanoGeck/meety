@@ -1,4 +1,7 @@
-import importlib.resources as resources
+try:
+    import importlib.resources as py_resources
+except ImportError:
+    import importlib_resources as py_resources
 
 
 def get_icon_path(filename):
@@ -22,5 +25,13 @@ def get_desktop_path(filename):
 
 
 def get_static_path(module, filename):
-    with resources.path(module, filename) as path:
+    with py_resources.path(module, filename) as path:
         return str(path)
+
+
+def path(package, resource):
+    return py_resources.path(package, resource)
+
+
+def open_text(package, resource):
+    return py_resources.open_text(package, resource)
