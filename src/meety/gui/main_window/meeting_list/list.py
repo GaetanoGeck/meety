@@ -18,6 +18,7 @@ from PyQt5.QtWidgets import (
     QWidget,
 )
 
+from meety import io
 from meety.gui.info_dialog.files import TabFiles
 from meety.gui.main_window.meeting_list.context import MeetingItemMenu
 from meety.gui.main_window.meeting_list.delegate import ItemDelegate
@@ -89,6 +90,10 @@ class Meetings(QWidget):
             self._context_menu_from_delegate
         )
 
+    @property
+    def current_meeting(self):
+        return self._list.current_meeting
+
     def set_name(self, name):
         self.name = name
         self._update_info()
@@ -136,6 +141,12 @@ class Meetings(QWidget):
         menu.exec_(event.globalPos())
         return True
 
+    def move_selection_down(self):
+        self._list.move_selection_down()
+
+    def move_selection_up(self):
+        self._list.move_selection_up()
+
 
 class MeetingList(QListWidget):
     COPY_COMPLETE_TIMESPAN = 2000
@@ -146,6 +157,7 @@ class MeetingList(QListWidget):
         self._set_delegate()
         self._set_drag_and_drop()
         self._copy_tracker = EventTimingTracker(self.COPY_COMPLETE_TIMESPAN)
+        self.setCurrentRow(0)
 
     def get_item_delegate(self):
         return self._item_delegate
@@ -155,10 +167,34 @@ class MeetingList(QListWidget):
         super().setItemDelegate(self._item_delegate)
         self._item_delegate.setParent(self)
 
+    def move_selection_down(self):
+        self.move_selection_by(+1)
+
+    def move_selection_up(self):
+        self.move_selection_by(-1)
+
+    def move_selection_by(self, offset):
+        self.move_selection_to(self.currentRow() + offset)
+
+    def move_selection_to(self, row):
+        new_row = self._valid_selection(row)
+        if new_row is not None:
+            super().setCurrentRow(new_row)
+
+    def _valid_selection(self, row):
+        start_selection = 0 if self.count() > 0 else None
+        return io.utils.ensure_between(
+            value=row,
+            at_least=0,
+            at_most=super().count()-1,
+            on_wrong_type=start_selection
+        )
+
     def _set_drag_and_drop(self):
         super().setDragEnabled(True)
 
     def keyPressEvent(self, event):
+        super().keyPressEvent(event)
         if event.matches(QKeySequence.Copy):
             close_to_last_copy = self._copy_tracker.new_event()
             self._copy_to_clipboard(complete=close_to_last_copy)

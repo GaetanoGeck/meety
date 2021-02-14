@@ -2,6 +2,7 @@ import importlib.resources as resources
 
 from PyQt5.QtCore import (
     QPoint,
+    Qt,
     pyqtSignal,
 )
 from PyQt5.QtWidgets import (
@@ -69,6 +70,19 @@ class MainWindow(QWidget):
         self._meetings.handler_chosen.connect(self.handler_chosen.emit)
         self._meetings.meeting_chosen.connect(self.meeting_chosen.emit)
         self._meetings.reload_requested.connect(self.reload_requested.emit)
+
+    def keyPressEvent(self, event):
+        super().keyPressEvent(event)
+        self.on_key(event)
+
+    def on_key(self, event):
+        key = event.key()
+        if key == Qt.Key_Down:
+            self._meetings.move_selection_down()
+        elif key == Qt.Key_Up:
+            self._meetings.move_selection_up()
+        elif key == Qt.Key_Return:
+            self.meeting_chosen.emit(self._meetings.current_meeting)
 
     def update_rated_meetings(self, rated_meetings):
         self._meetings.update_rated_meetings(rated_meetings)
