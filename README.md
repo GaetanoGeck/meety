@@ -38,13 +38,12 @@ Just follow the three steps below.
   If the application doesn't run as expected, please consider updating the required packages via the _requirements.txt_ file in this repository: `pip install --upgrade -r requirements.txt`
 - **Alternatively download one of the bundles:**
     - Linux
-		- [Debian package](https://github.com/GaetanoGeck/meety/releases/download/v0.9.2/python3-meety_0.9.2-1_all.deb) (Ubuntu, ...):
-		- Pacman package (Arch Linux, ...):
-		- [RPM package](https://github.com/GaetanoGeck/meety/releases/download/v0.9.2/meety-0.9.2-1.noarch.rpm) (Fedora, openSUSE, ...):
+		- [Debian package](https://github.com/GaetanoGeck/meety/releases/download/v0.10.0/python3-meety_0.10.0-1_all.deb) (Ubuntu, ...):
+		- [RPM package](https://github.com/GaetanoGeck/meety/releases/download/v0.10.0/meety-0.10.0-1.noarch.rpm) (Fedora, openSUSE, ...):
     - MacOS: Right now, there is unfortunately no alternative.
     - Windows
 		1. Install the runtime library from Microsoft: [Visual C++ 2010 Redistributable Package (x86)](https://www.microsoft.com/en-US/download/details.aspx?id=5555)
-		2. Download the [zip archive](https://github.com/GaetanoGeck/meety/releases/download/v0.9.2/meety-0.9.2-windows.zip) that contains
+		2. Download the [zip archive](https://github.com/GaetanoGeck/meety/releases/download/v0.10.0/meety-0.10.0-windows.zip) that contains
             - the graphical user interface (`meety.exe`) and
             - the required libraries.
         3. Extract the archive into a suitable place (e.g. to `C:\Program Files\meety`).
