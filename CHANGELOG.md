@@ -1,3 +1,13 @@
+- **version 0.10.0** on 2021-02-15:
+    - introduced rudimentary weighting of matching time preferences
+    - allow easy creation of meeting specification template
+    - GUI improvements:
+        - allow to copy/drag meetings and further UI improvements
+        - allow to create shortcuts
+        - allow to define position on screen
+    - extend logging
+    - support Python 3.6 (backported importlib_resources)
+    - various code improvements and fixes
 - **version 0.9.2** on 2020-12-02: Load configuration before preparation of arguments
 - **version 0.9.1** on 2020-12-02: Fix user configuration template
     - do not disable language packs

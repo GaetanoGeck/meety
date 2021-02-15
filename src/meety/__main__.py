@@ -12,7 +12,7 @@ from meety.loader import Loader
 from meety.logging import log
 
 PROGRAM = "meety"
-VERSION = "0.9.2"
+VERSION = "0.10.0"
 SUMMARY = f"This is {PROGRAM}, version {VERSION}."
 URL = "https://github.com/GaetanoGeck/meety/"
 
