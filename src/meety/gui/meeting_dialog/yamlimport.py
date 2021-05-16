@@ -7,11 +7,12 @@ from PyQt5.QtWidgets import (
 
 
 class YamlImport(QWidget):
-    def __init__(self):
+    def __init__(self, text=""):
         super().__init__()
         self._init_style()
         self._add_widgets()
         self._connect_widget_signals()
+        self._yaml_spec.setPlainText(text)
 
     def _init_style(self):
         pass
@@ -29,6 +30,9 @@ class YamlImport(QWidget):
 
     def _connect_widget_signals(self):
         pass
+
+    def setSpecification(self, spec):
+        self._yaml_spec.setPlainText(spec)
 
     def specification(self):
         return self._yaml_spec.toPlainText()

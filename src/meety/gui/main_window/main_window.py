@@ -16,6 +16,12 @@ from meety.gui.main_window.search import SearchWidget
 from meety.gui.main_window.status import StatusWidget
 from meety.gui.meeting_dialog import MeetingDialog
 from meety.io.utils import ensure_between
+from meety.logging import log
+
+
+def url_to_entry(url):
+    name = f"URL ({url})"
+    return f"- name: {name}\n  url: {url}"
 
 
 class MainWindow(QWidget):
@@ -32,6 +38,7 @@ class MainWindow(QWidget):
         self._init_style()
         self._add_widgets()
         self._connect_widget_signals()
+        self._set_drag_and_drop()
 
     def _init_style(self):
         with resources.open_text(gui_static, "stylesheet.css") as css:
@@ -88,9 +95,32 @@ class MainWindow(QWidget):
     def _on_add_meeting(self):
         self.show_add_meeting()
 
-    def show_add_meeting(self):
-        dialog = MeetingDialog()
+    def show_add_meeting(self, text=""):
+        dialog = MeetingDialog(text)
         dialog.exec_()
+
+    def _set_drag_and_drop(self):
+        super().setAcceptDrops(True)
+
+    def dragEnterEvent(self, event):
+        mime = event.mimeData()
+        if mime.hasText() or mime.hasUrls():
+            event.accept()
+        else:
+            event.ignore()
+
+    def dropEvent(self, event):
+        mime = event.mimeData()
+        if mime.hasUrls():
+            text = "\n".join(
+                [url_to_entry(u) for u in mime.urls()]
+            )
+        elif mime.hasText():
+            text = mime.text()
+        else:
+            log.warning("Unknown MIME content dropped.")
+            return
+        self.show_add_meeting(text)
 
     def update_rated_meetings(self, rated_meetings):
         self._meetings.update_rated_meetings(rated_meetings)

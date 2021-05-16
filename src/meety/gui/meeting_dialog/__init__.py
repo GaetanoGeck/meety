@@ -11,12 +11,13 @@ from meety.gui.meeting_dialog.yamlimport import YamlImport
 
 
 class MeetingDialog(QDialog):
-    def __init__(self):
+    def __init__(self, text=""):
         super().__init__()
         self.setWindowTitle("Add meeting")
         self._init_style()
         self._add_widgets()
         self._connect_widget_signals()
+        self._yaml_spec.setSpecification(text)
 
     def _init_style(self):
         pass
