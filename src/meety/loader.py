@@ -50,9 +50,17 @@ class Loader:
         )
 
     def _load_meeting_entries_from_file(self, filename):
-        """Try to load meetings from YAML file, return """
+        """Try to load meetings from YAML file, return list of meetings"""
         data = self._load_data_from_file(filename)
         return self._create_meetings_from_data(data)
+
+    def _load_meeting_entries_from_spec(self, spec):
+        """Try to load meetings from YAML specification,
+        return list of meetings.
+        """
+        data = self._load_data_from_spec(spec)
+        new_meetings = self._create_meetings_from_data(data)
+        self._meetings.extend(new_meetings)
 
     def _load_data_from_file(self, filename):
         """Try to load data from YAML file, return empty dictionary on
@@ -69,6 +77,14 @@ class Loader:
         except Exception as e:
             self._loaded_paths.fail_on(filename, "failed to parse")
             log.warning(f"Failed to load meetings from '{filename}'")
+            log.exception(e)
+            return None
+
+    def _load_data_from_spec(self, text):
+        try:
+            return yaml.load(text, Loader=yaml.BaseLoader)
+        except Exception as e:
+            log.warning(f"Failed to load temporary meetings from '{text}'")
             log.exception(e)
             return None
 
@@ -102,6 +118,7 @@ class Loader:
         self.only_explicit = False
         self._loaded_paths = LoadedPaths()
         self._meetings = []
+        self._yaml_runtime_specs = []
 
     def add_explicit_directories(self, directories):
         self._explicit_directories.extend(directories)
@@ -147,11 +164,16 @@ class Loader:
     def add_file(self, filename):
         self._consider_to_load_from_file(filename)
 
+    def add_runtime_specs(self, text):
+        self._yaml_runtime_specs.append(text)
+
     def reload(self):
         """Reload data from already loaded files."""
         self._meetings = []
         for path in self._loaded_paths.all_paths:
             self.load_from_file(path)
+        for spec in self._yaml_runtime_specs:
+            self._load_meeting_entries_from_spec(spec)
 
     def _log_files_to_consider(self, files):
         if not files:
@@ -199,6 +221,7 @@ LoadStatus = namedtuple("LoadStatus", "new all")
 
 class LoadedPaths:
     """Remember absolute paths of files that have already been loaded."""
+
     def __init__(self):
         self._status = OrderedDict()
 

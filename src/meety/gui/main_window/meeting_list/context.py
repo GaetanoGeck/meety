@@ -8,6 +8,7 @@ from meety.io import copy_to_clipboard
 class MeetingItemMenu(QMenu):
     handler_chosen = pyqtSignal(object, name="handler_chosen")
     reload_requested = pyqtSignal(name="reload_requested")
+    add_meeting_requested = pyqtSignal(name="add_meeting_requested")
 
     def __init__(self, meeting):
         super().__init__()
@@ -23,6 +24,7 @@ class MeetingItemMenu(QMenu):
             self._add_handler_actions()
             self.addSeparator()
         self.addAction("&Reload all meetings", self._on_reload)
+        self.addAction("&Add meeting", self._on_add_meeting)
 
     def _add_handler_actions(self):
         if self._meeting is None:
@@ -58,3 +60,6 @@ class MeetingItemMenu(QMenu):
 
     def _on_reload(self):
         self.reload_requested.emit()
+
+    def _on_add_meeting(self):
+        self.add_meeting_requested.emit()

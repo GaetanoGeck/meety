@@ -30,6 +30,7 @@ class Meetings(QWidget):
     meeting_chosen = pyqtSignal(object, name="meeting_chosen")
     handler_chosen = pyqtSignal(object, name="handler_chosen")
     reload_requested = pyqtSignal(name="reload_requested")
+    add_meeting_requested = pyqtSignal(name="add_meeting_requested")
     rating_mode_toggled = pyqtSignal(bool, name="rating_mode_toggled")
 
     def __init__(self):
@@ -138,6 +139,7 @@ class Meetings(QWidget):
         menu = MeetingItemMenu(meeting)
         menu.handler_chosen.connect(self.handler_chosen.emit)
         menu.reload_requested.connect(self.reload_requested.emit)
+        menu.add_meeting_requested.connect(self.add_meeting_requested.emit)
         menu.exec_(event.globalPos())
         return True
 

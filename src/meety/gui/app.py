@@ -113,6 +113,11 @@ def add_meeting_file(filename):
     _on_reload_requested()
 
 
+def add_meeting_specs(text):
+    _loader.add_runtime_specs(text)
+    _on_reload_requested()
+
+
 def _on_reload_requested():
     _loader.reload()
     window.notify("Reloaded meetings.")

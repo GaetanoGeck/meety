@@ -14,6 +14,7 @@ from meety.gui import static as gui_static
 from meety.gui.main_window.meeting_list import Meetings
 from meety.gui.main_window.search import SearchWidget
 from meety.gui.main_window.status import StatusWidget
+from meety.gui.meeting_dialog import MeetingDialog
 from meety.io.utils import ensure_between
 
 
@@ -69,6 +70,7 @@ class MainWindow(QWidget):
         self._meetings.handler_chosen.connect(self.handler_chosen.emit)
         self._meetings.meeting_chosen.connect(self.meeting_chosen.emit)
         self._meetings.reload_requested.connect(self.reload_requested.emit)
+        self._meetings.add_meeting_requested.connect(self._on_add_meeting)
 
     def keyPressEvent(self, event):
         super().keyPressEvent(event)
@@ -82,6 +84,13 @@ class MainWindow(QWidget):
             self._meetings.move_selection_up()
         elif key == Qt.Key_Return:
             self.meeting_chosen.emit(self._meetings.current_meeting)
+
+    def _on_add_meeting(self):
+        self.show_add_meeting()
+
+    def show_add_meeting(self):
+        dialog = MeetingDialog()
+        dialog.exec_()
 
     def update_rated_meetings(self, rated_meetings):
         self._meetings.update_rated_meetings(rated_meetings)
