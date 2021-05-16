@@ -103,7 +103,7 @@ class TabFiles(QWidget):
             parent=QFileDialog(),
             caption="New meeting specification",
             directory=os.path.expanduser("~"),
-            filter="yaml (*.yaml)"
+            filter="yaml (*.yaml *.yml)"
         )[0]
         return filename
 
