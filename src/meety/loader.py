@@ -152,6 +152,10 @@ class Loader:
     def meetings(self):
         return self._meetings
 
+    def unload(self):
+        self._meetings = []
+        self._loaded_paths.remove_all()
+
     def load(self):
         """Load from all explicitly and implicitly specified files if
         the file has not already been read.
@@ -254,3 +258,6 @@ class LoadedPaths:
     def fail_on(self, path, msg=None):
         abspath = os.path.abspath(path)
         self._status[abspath] = msg
+
+    def remove_all(self):
+        self._status.clear()

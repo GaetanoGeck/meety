@@ -1,5 +1,6 @@
 """The command-line interface program."""
 
+import sys
 from datetime import datetime
 
 from meety import connect
@@ -19,6 +20,19 @@ name = "cli"
 
 def run(args, loader):
     meetings = loader.meetings
+    if args.stdin:
+        msg = " ".join([
+            "Reading meeting specification(s) from standard input",
+            "[complete with Ctrl+D]",
+        ])
+        print(msg)
+        spec = "".join(sys.stdin.readlines())
+        loader.unload()
+        meetings = add_meeting_from_spec(args, loader, spec)
+    if args.url:
+        spec = f"name: URL ({args.url})\nurl: {args.url}"
+        loader.unload()
+        meetings = add_meeting_from_spec(args, loader, spec)
     if args.list_connection_handlers:
         print(connect.handlers)
     elif args.list_meetings:
@@ -29,6 +43,15 @@ def run(args, loader):
             _show_ratings(matches)
         else:
             _show_and_connect(args, matches)
+
+
+def add_meeting_from_spec(args, loader, spec):
+    loader.unload()
+    loader.add_runtime_specs(spec)
+    args.all = True
+    args.yes = True
+    loader.reload()
+    return loader.meetings
 
 
 def _show_ratings(matches):

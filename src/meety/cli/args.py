@@ -63,6 +63,18 @@ def add_argparser_arguments(parser):
         default=False,
     )
     parser.add_argument(
+        "-i", "--stdin",
+        help="consider specification from standard input only",
+        action="store_true",
+        default=False,
+    )
+    parser.add_argument(
+        "-u", "--url",
+        help="connect via the the given url",
+        action="store",
+        type=str,
+    )
+    parser.add_argument(
         "--datetime",
         help="use given datetime instead of current",
         action="store",
