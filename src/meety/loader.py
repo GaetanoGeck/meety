@@ -131,8 +131,8 @@ class Loader:
     @property
     def active_directories(self):
         if self.only_explicit:
-            return self._explicit_directories
-        return self._explicit_directories + Loader.implicit_directories
+            return set(self._explicit_directories)
+        return set(self._explicit_directories + Loader.implicit_directories)
 
     @property
     def explicit_files(self):
