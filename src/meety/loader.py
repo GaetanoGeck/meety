@@ -121,10 +121,12 @@ class Loader:
         self._yaml_runtime_specs = []
 
     def add_explicit_directories(self, directories):
-        self._explicit_directories.extend(directories)
+        clean_dirs = [os.path.expanduser(d) for d in directories]
+        self._explicit_directories.extend(clean_dirs)
 
     def add_explicit_files(self, files):
-        self._explicit_files.extend(files)
+        clean_files = [os.path.expanduser(f) for f in files]
+        self._explicit_files.extend(clean_files)
 
     @property
     def active_directories(self):
