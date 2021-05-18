@@ -92,6 +92,49 @@ The list of matching meetings can be shortened in many cases with the use of one
 - show only meeting with a maximal rating (`-b` or `--best`) or, even more restricted,
 - show only the very first meeting (`-1` or `--first`) with a maximal rating.
 
+## Connect directly
+
+You can let _Meety_ ignore all other possibly specified meetings in other files and consider instead only a single URL or a meeting specification from the standard.
+
+### Connect via URL
+
+The option `--url` allows to specify a single URL that will be used for the connection.
+
+```
+> cmeety --url http://github.com                           # or '-u' for short
+There's one matching meeting: URL (http://github.com)
+```
+
+Note that, depending on the connection handler, it might be necessary to provide a protocol (like HTTP above via `http://` above).
+
+### Connect via specification from standard input
+
+A single meeting or even multiple ones can be specified directly on the standard input (rather than be read from some file) using the `--stdin` option.
+
+In the following example, the text
+
+```
+- name: GitHub
+  url: http://github.com
+  
+- name: Wikipedia
+  url: http://en.wikipedia.org/wiki/Git
+```
+is entered (or pasted) on the console.
+
+```
+Reading meeting specification(s) from standard input [complete with Ctrl+D]
+- name: GitHub
+  url: http://github.com
+  
+- name: Wikipedia
+  url: http://en.wikipedia.org/wiki/Git
+There are multiple matches:
+  [1] GitHub
+  [2] Wikipedia
+Which one do you want to choose?
+```
+
 ## Further options
 
 There are further options. You can get a quick overview with `cmeety --help`.
