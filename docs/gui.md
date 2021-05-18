@@ -32,6 +32,7 @@ Note that _other_ connection handlers than the _preferred_ one (if existing) can
 - Select a specific connection handler,
   useful if there are multiple candidates (Web, Zoom etc.)
 - Ask _Meety_ to reload the YAML files
+- Ask _Meety_ to add a meeting specification (not in the screenshot)
 
 <img alt="Screenshot of the graphical user interface with context menu" src="./screenshots/gui-context_menu.png" width="40%"/>
 
@@ -39,11 +40,17 @@ The context menu can be opened by a right click on the entry or a normal click o
 
 ## Copying and dragging a meeting
 
-**Drag and drop.** In case you want to share information on a selected meeting quickly with somebody else, you can drag a meeting to a text field. Note that there are two modes affecting the content:
+**Dragging.** In case you want to share information on a selected meeting quickly with somebody else, you can drag a meeting to a text field. Note that there are two modes affecting the content:
 - minimalistic (by default), which yields a single line of the form `<NAME>: <PREFERRED CONNECTION HANDLER URL>` and
 - more informative (if <kbd>Shift</kbd> is pressed), which yields the YAML entry.
 
 **Keyboard.** Alternatively, you can press the "copy sequence" on your system (probably <kbd>Ctrl+C</kbd>) once, for the minimalistic content, and twice within a short delay, for the more informative content.
+
+## Adding and dropping a meeting
+
+You can also add meeting specifications by dragging texts or URLs from some other place and dropping them onto the application. On such a drop, a dialog opens that let's you choose whether the specification should be added only to the running instance of _Meety_ (such that it will be lost if you close the application) or to some YAML file. In the latter case, the specification will be simply appended to the file. That is, if the file previously contained meeting specifications, they'll remain unchanged.
+
+This dialog can also be reached via the entry `Add meeting` in the context menu.
 
 ## Info dialog
 
